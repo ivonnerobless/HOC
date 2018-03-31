@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2016, NXP Semiconductor, Inc.
- * All rights reserved.
+ * Copyright (c) 2016, Freescale Semiconductor, Inc.
+ * Copyright 2016-2017 NXP
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -12,7 +12,7 @@
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
  *
- * o Neither the name of NXP Semiconductor, Inc. nor the names of its
+ * o Neither the name of the copyright holder nor the names of its
  *   contributors may be used to endorse or promote products derived from this
  *   software without specific prior written permission.
  *
@@ -28,23 +28,56 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * @file    pin_mux.h
- * @brief   Board pins header file.
- */
- 
-/* This is a template for board specific configuration created by MCUXpresso IDE Project Wizard.*/
-
 #ifndef _PIN_MUX_H_
 #define _PIN_MUX_H_
 
 
-/**
- * @brief 	Initialize board pins.
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+
+/*! @brief Direction type  */
+typedef enum _pin_mux_direction
+{
+  kPIN_MUX_DirectionInput = 0U,         /* Input direction */
+  kPIN_MUX_DirectionOutput = 1U,        /* Output direction */
+  kPIN_MUX_DirectionInputOrOutput = 2U  /* Input or output direction */
+} pin_mux_direction_t;
+
+/*!
+ * @addtogroup pin_mux
+ * @{
  */
-void BOARD_InitBootPins(void);
 
+/*******************************************************************************
+ * API
+ ******************************************************************************/
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitPins(void);
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_I2C_ConfigurePins(void);
+
+#if defined(__cplusplus)
+}
+#endif
+
+/*!
+ * @}
+ */
 #endif /* _PIN_MUX_H_ */
 
-
+/*******************************************************************************
+ * EOF
+ ******************************************************************************/
