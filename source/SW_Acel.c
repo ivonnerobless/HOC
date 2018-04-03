@@ -329,3 +329,87 @@ static bool I2C_ReadAccelRegs(I2C_Type *base, uint8_t device_addr, uint8_t reg_a
 /*!
  * @brief Main function
  */
+void SW_Acel(void)
+{
+    bool isThereAccel = false;
+    BOARD_InitPins();
+    BOARD_BootClockRUN();
+    BOARD_I2C_ReleaseBus();
+    BOARD_I2C_ConfigurePins();
+    BOARD_InitDebugConsole();
+
+    PRINTF("\r\nI2C example -- Read Accelerometer Value\r\n");
+
+    I2C_MasterTransferCreateHandle(BOARD_ACCEL_I2C_BASEADDR, &g_m_handle, i2c_master_callback, NULL);
+    isThereAccel = I2C_ReadAccelWhoAmI();
+
+    /*  read the accel xyz value if there is accel device on board */
+    if (true == isThereAccel)
+    {
+        uint8_t databyte = 0;
+        uint8_t write_reg = 0;
+        uint8_t readBuff[7];
+        int16_t x, y, z;
+        uint8_t status0_value = 0;
+        uint32_t i = 0U;
+
+        /*  please refer to the "example FXOS8700CQ Driver Code" in FXOS8700 datasheet. */
+        /*  write 0000 0000 = 0x00 to accelerometer control register 1 */
+        /*  standby */
+        /*  [7-1] = 0000 000 */
+        /*  [0]: active=0 */
+        write_reg = ACCEL_CTRL_REG1;
+        databyte = 0;
+        I2C_WriteAccelReg(BOARD_ACCEL_I2C_BASEADDR, g_accel_addr_found, write_reg, databyte);
+
+        /*  write 0000 0001= 0x01 to XYZ_DATA_CFG register */
+        /*  [7]: reserved */
+        /*  [6]: reserved */
+        /*  [5]: reserved */
+        /*  [4]: hpf_out=0 */
+        /*  [3]: reserved */
+        /*  [2]: reserved */
+        /*  [1-0]: fs=01 for accelerometer range of +/-4g range with 0.488mg/LSB */
+        /*  databyte = 0x01; */
+        write_reg = ACCEL_XYZ_DATA_CFG;
+        databyte = 0x01;
+        I2C_WriteAccelReg(BOARD_ACCEL_I2C_BASEADDR, g_accel_addr_found, write_reg, databyte);
+
+        /*  write 0000 1101 = 0x0D to accelerometer control register 1 */
+        /*  [7-6]: aslp_rate=00 */
+        /*  [5-3]: dr=001 for 200Hz data rate (when in hybrid mode) */
+        /*  [2]: lnoise=1 for low noise mode */
+        /*  [1]: f_read=0 for normal 16 bit reads */
+        /*  [0]: active=1 to take the part out of standby and enable sampling */
+        /*   databyte = 0x0D; */
+        write_reg = ACCEL_CTRL_REG1;
+        databyte = 0x0d;
+        I2C_WriteAccelReg(BOARD_ACCEL_I2C_BASEADDR, g_accel_addr_found, write_reg, databyte);
+        PRINTF("The accel values:\r\n");
+        for (i = 0; i < ACCEL_READ_TIMES; i++)
+        {
+            status0_value = 0;
+            /*  wait for new data are ready. */
+            while (status0_value != 0xff)
+            {
+                I2C_ReadAccelRegs(BOARD_ACCEL_I2C_BASEADDR, g_accel_addr_found, ACCEL_STATUS, &status0_value, 1);
+            }
+
+            /*  Multiple-byte Read from STATUS (0x00) register */
+            I2C_ReadAccelRegs(BOARD_ACCEL_I2C_BASEADDR, g_accel_addr_found, ACCEL_STATUS, readBuff, 7);
+
+            status0_value = readBuff[0];
+            x = ((int16_t)(((readBuff[1] * 256U) | readBuff[2]))) / 4U;
+            y = ((int16_t)(((readBuff[3] * 256U) | readBuff[4]))) / 4U;
+            z = ((int16_t)(((readBuff[5] * 256U) | readBuff[6]))) / 4U;
+
+            PRINTF("status_reg = 0x%x , x = %5d , y = %5d , z = %5d \r\n", status0_value, x, y, z);
+        }
+    }
+
+    PRINTF("\r\nEnd of I2C example .\r\n");
+    while (1)
+    {
+    }
+}
+
