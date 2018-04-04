@@ -75,8 +75,8 @@ int main(void) {
 void SysTick_Handler(void)
  {
 
-  //  sys_tick_counter++;
-// 	gsc_sch_core_tick_isr();
+   sys_tick_counter++;
+   gsc_sch_core_tick_isr();
 
 
  }
