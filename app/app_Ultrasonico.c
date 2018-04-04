@@ -32,57 +32,37 @@
  * @file    app_Ultrasonico.c
  * @brief   Application entry point.
  */
-#include <stdio.h>
-#include "board.h"
-#include "peripherals.h"
-#include "pin_mux.h"
-#include "clock_config.h"
+#include "app_Ultrasonico.h"
 #include "MKL25Z4.h"
+#include "fsl_gpio.h"
+#include "fsl_port.h"
+#include "fsl_clock.h"
+
+	unsigned char lub_estadoTRG;
 
 void APP_TRG_ON_OFF (void)
 {
-	unsigned char lub_estadoTRG;
-
-	lub_estadoTRG = GPIO_ReadPinInput(GPIOB, APP_TRG_PIN_NUMBER);
-
-	if (lub_estadoTRG == 0u)
-	{
-		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
-		GPIO_WritePinOutput(GPIOB, APP_TRG_PIN_NUMBER, 1u);
-	}
-
-	else
-	{
-		/*REINICIAR CONTADOR*/
-
-		COUNTER_TRG == 0U;
-
-	}
-}
-
-void APP_TRG_ON_OFF (void)
-{
-	unsigned char lub_estadoTRG;
-
-	lub_estadoTRG = GPIO_ReadPinInput(GPIOB, APP_TRG_PIN_NUMBER);
-
-	if (lub_estadoTRG == 1u)
-	{
 		/* CADA RECEPCION DE SEÑAL PONER EN 0*/
 		GPIO_WritePinOutput(GPIOB, APP_TRG_PIN_NUMBER, 0u);
-	}
+}
 
-	else
-	{
-		/*REINICIAR CONTADOR*/
-
-		COUNTER_TRG == 0U;
-
-	}
+void APP_TRG_OFF_ON (void)
+{
+		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
+		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER, 1u);
 }
 
 void app_config_init_counter (void)
 {
+	CLOCK_EnableClock(kCLOCK_PortC);
+
+	port_pin_config_t ls_port_config;
+
+	ls_port_config.mux = kPORT_MuxAsGpio;
+
+	PORT_SetPinConfig(PORTC, APP_ECHO_PIN_NUMBER, &ls_port_config);
+	PORT_SetPinConfig(PORTC, APP_TRG_PIN_NUMBER, &ls_port_config);
+
 
 /*GPIO AS OUTPUT*/
 
@@ -92,21 +72,32 @@ void app_config_init_counter (void)
 		ls_PinConfig.outputLogic = 1u;
 
 
-		GPIO_PinInit(GPIOB, APP_TRG_PIN_NUMBER, &ls_PinConfig);
+		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER, &ls_PinConfig);
+
+
+
+
+		/*Input config*/
+		ls_PinConfig.pinDirection = kGPIO_DigitalInput;
+
+		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER, &ls_PinConfig);
 
 }
 
-void APP_COUNTER_TIME (void)
+unsigned long APP_COUNTER_TIME (unsigned char lub_pin_number)
 	{
-	unsigned char lul_TIME;
+	unsigned long lul_TIME;
 
-	lul_TIME == 0u;
+	lul_TIME = 0u;
 
 	do
 	{
 		lul_TIME++;
 	}
-	while (lul_TIME = lub_estadoTRG);
+	while (0u == GPIO_ReadPinInput(GPIOC, lub_pin_number));
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER, 0u);
+
+	return lul_TIME;
 	}
 
 
@@ -114,12 +105,12 @@ void COUNTER_TRG (void)
 	{
 	unsigned char lul_counter_TRG;
 
-	lul_counter_TRG == 256u;
+	lul_counter_TRG = 255u;
 
 	do
 	{
 		lul_counter_TRG--;
 	}
-	while (lul_counter_TRG = lub_estadoTRG);
+	while (1u == lub_estadoTRG);
 	}
 
