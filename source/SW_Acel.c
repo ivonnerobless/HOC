@@ -329,7 +329,7 @@ static bool I2C_ReadAccelRegs(I2C_Type *base, uint8_t device_addr, uint8_t reg_a
 /*!
  * @brief Main function
  */
-int app_master(void)
+void app_master(void)
 {
     bool isThereAccel = false;
 
@@ -343,7 +343,7 @@ uint8_t databyte = 0;
       int16_t x, y, z;
       uint8_t status0_value = 0;
       uint32_t i = 0U;
-int app_LeerCordenadas(void){
+void app_LeerCordenadas(void){
     /*  read the accel xyz value if there is accel device on board */
 
 
@@ -384,7 +384,7 @@ int app_LeerCordenadas(void){
 
     }
 
-int app_coordenadas(void){
+void app_coordenadas(void){
         for (i = 0; i < ACCEL_READ_TIMES; i++)
         {
             status0_value = 0;
