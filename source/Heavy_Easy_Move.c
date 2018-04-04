@@ -52,6 +52,10 @@ int main(void) {
     BOARD_InitBootClocks();
   	/* Init FSL debug console. */
 	BOARD_InitDebugConsole();
+	BOARD_I2C_ReleaseBus();
+	BOARD_I2C_ConfigurePins();
+
+
 
     printf("Heavy Easy Move\n");
     printf("Anyone can move the world\n");
@@ -64,11 +68,15 @@ int main(void) {
 
 	/* Execute Scheduler */
 	gsc_sch_core_exec();
+
     return 0 ;
 }
 
 void SysTick_Handler(void)
  {
- 	sys_tick_counter++;
- 	gsc_sch_core_tick_isr();
+
+  //  sys_tick_counter++;
+// 	gsc_sch_core_tick_isr();
+
+
  }

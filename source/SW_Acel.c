@@ -4,7 +4,6 @@
  *  Created on: 31/03/2018
  *      Author: Ivonne Robles
  */
-
 /*  SDK Included Files */
 #include "board.h"
 #include "fsl_debug_console.h"
@@ -329,29 +328,24 @@ static bool I2C_ReadAccelRegs(I2C_Type *base, uint8_t device_addr, uint8_t reg_a
 /*!
  * @brief Main function
  */
-void SW_Acel(void)
+int app_master(void)
 {
     bool isThereAccel = false;
-    BOARD_InitPins();
-    BOARD_BootClockRUN();
-    BOARD_I2C_ReleaseBus();
-    BOARD_I2C_ConfigurePins();
-    BOARD_InitDebugConsole();
 
-    PRINTF("\r\nI2C example -- Read Accelerometer Value\r\n");
 
     I2C_MasterTransferCreateHandle(BOARD_ACCEL_I2C_BASEADDR, &g_m_handle, i2c_master_callback, NULL);
     isThereAccel = I2C_ReadAccelWhoAmI();
-
+}
+uint8_t databyte = 0;
+      uint8_t write_reg = 0;
+      uint8_t readBuff[7];
+      int16_t x, y, z;
+      uint8_t status0_value = 0;
+      uint32_t i = 0U;
+int app_LeerCordenadas(void){
     /*  read the accel xyz value if there is accel device on board */
-    if (true == isThereAccel)
-    {
-        uint8_t databyte = 0;
-        uint8_t write_reg = 0;
-        uint8_t readBuff[7];
-        int16_t x, y, z;
-        uint8_t status0_value = 0;
-        uint32_t i = 0U;
+
+
 
         /*  please refer to the "example FXOS8700CQ Driver Code" in FXOS8700 datasheet. */
         /*  write 0000 0000 = 0x00 to accelerometer control register 1 */
@@ -385,7 +379,11 @@ void SW_Acel(void)
         write_reg = ACCEL_CTRL_REG1;
         databyte = 0x0d;
         I2C_WriteAccelReg(BOARD_ACCEL_I2C_BASEADDR, g_accel_addr_found, write_reg, databyte);
-        PRINTF("The accel values:\r\n");
+
+
+    }
+
+int app_coordenadas(void){
         for (i = 0; i < ACCEL_READ_TIMES; i++)
         {
             status0_value = 0;
@@ -403,13 +401,11 @@ void SW_Acel(void)
             y = ((int16_t)(((readBuff[3] * 256U) | readBuff[4]))) / 4U;
             z = ((int16_t)(((readBuff[5] * 256U) | readBuff[6]))) / 4U;
 
-            PRINTF("status_reg = 0x%x , x = %5d , y = %5d , z = %5d \r\n", status0_value, x, y, z);
+
         }
     }
 
-    PRINTF("\r\nEnd of I2C example .\r\n");
-    while (1)
-    {
-    }
-}
+
+
+
 
