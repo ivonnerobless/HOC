@@ -30,7 +30,7 @@
 #ifndef _FSL_PORT_H_
 #define _FSL_PORT_H_
 
-#include <drivers_HAL/fsl_common.h>
+#include "fsl_common.h"
 
 /*!
  * @addtogroup port
