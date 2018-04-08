@@ -40,17 +40,54 @@
 
 	unsigned char lub_estadoTRG;
 
-void APP_TRG_ON_OFF (void)
+void APP_TRG_ON_OFF_0 (void)
 {
 		/* CADA RECEPCION DE SEÑAL PONER EN 0*/
-		GPIO_WritePinOutput(GPIOB, APP_TRG_PIN_NUMBER, 0u);
+		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_0, 0u);
 }
 
-void APP_TRG_OFF_ON (void)
+void APP_TRG_OFF_ON_0 (void)
 {
 		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER, 1u);
+		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_0, 1u);
 }
+
+void APP_TRG_ON_OFF_1 (void)
+{
+		/* CADA RECEPCION DE SEÑAL PONER EN 0*/
+		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_1, 0u);
+}
+
+void APP_TRG_OFF_ON_1 (void)
+{
+		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
+		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_1, 1u);
+}
+
+void APP_TRG_ON_OFF_2 (void)
+{
+		/* CADA RECEPCION DE SEÑAL PONER EN 0*/
+		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_2, 0u);
+}
+
+void APP_TRG_OFF_ON_2 (void)
+{
+		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
+		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_2, 1u);
+}
+
+void APP_TRG_ON_OFF_3 (void)
+{
+		/* CADA RECEPCION DE SEÑAL PONER EN 0*/
+		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_3, 0u);
+}
+
+void APP_TRG_OFF_ON_3 (void)
+{
+		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
+		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_3, 1u);
+}
+
 
 void app_config_init_counter (void)
 {
@@ -60,8 +97,14 @@ void app_config_init_counter (void)
 
 	ls_port_config.mux = kPORT_MuxAsGpio;
 
-	PORT_SetPinConfig(PORTC, APP_ECHO_PIN_NUMBER, &ls_port_config);
-	PORT_SetPinConfig(PORTC, APP_TRG_PIN_NUMBER, &ls_port_config);
+	PORT_SetPinConfig(PORTC, APP_ECHO_PIN_NUMBER_0, &ls_port_config);
+	PORT_SetPinConfig(PORTC, APP_ECHO_PIN_NUMBER_1, &ls_port_config);
+	PORT_SetPinConfig(PORTC, APP_ECHO_PIN_NUMBER_2, &ls_port_config);
+	PORT_SetPinConfig(PORTC, APP_ECHO_PIN_NUMBER_3, &ls_port_config);
+	PORT_SetPinConfig(PORTC, APP_TRG_PIN_NUMBER_0, &ls_port_config);
+	PORT_SetPinConfig(PORTC, APP_TRG_PIN_NUMBER_1, &ls_port_config);
+	PORT_SetPinConfig(PORTC, APP_TRG_PIN_NUMBER_2, &ls_port_config);
+	PORT_SetPinConfig(PORTC, APP_TRG_PIN_NUMBER_3, &ls_port_config);
 
 
 /*GPIO AS OUTPUT*/
@@ -72,20 +115,25 @@ void app_config_init_counter (void)
 		ls_PinConfig.outputLogic = 1u;
 
 
-		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER, &ls_PinConfig);
-
+		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_0, &ls_PinConfig);
+		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_1, &ls_PinConfig);
+		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_2, &ls_PinConfig);
+		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_3, &ls_PinConfig);
 
 
 
 		/*Input config*/
 		ls_PinConfig.pinDirection = kGPIO_DigitalInput;
 
-		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER, &ls_PinConfig);
+		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_0, &ls_PinConfig);
+		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_1, &ls_PinConfig);
+		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_2, &ls_PinConfig);
+		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_3, &ls_PinConfig);
 
 }
 
 unsigned long APP_COUNTER_TIME (unsigned char lub_pin_number)
-	{
+{
 	unsigned long lul_TIME;
 
 	lul_TIME = 0u;
@@ -95,10 +143,10 @@ unsigned long APP_COUNTER_TIME (unsigned char lub_pin_number)
 		lul_TIME++;
 	}
 	while (0u == GPIO_ReadPinInput(GPIOC, lub_pin_number));
-	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER, 0u);
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_0, 0u);
 
 	return lul_TIME;
-	}
+}
 
 
 void COUNTER_TRG (void)
