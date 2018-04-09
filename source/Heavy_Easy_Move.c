@@ -39,9 +39,10 @@
 #include "MKL25Z4.h"
 
 /* TODO: insert other include files here. */
+#include "gsc_scheduler/gsc_sch_core/gsc_sch_core.h"
 
 /* TODO: insert other definitions and declarations here. */
-
+volatile unsigned int sys_tick_counter = 0;
 /*
  * @brief   Application entry point.
  */
@@ -51,14 +52,31 @@ int main(void) {
     BOARD_InitBootClocks();
   	/* Init FSL debug console. */
 	BOARD_InitDebugConsole();
+	BOARD_I2C_ReleaseBus();
+	BOARD_I2C_ConfigurePins();
 
-    printf("Hello World\n");
 
-    /* Force the counter to be placed into memory. */
-    volatile static int i = 0 ;
-    /* Enter an infinite loop, just incrementing a counter. */
-    while(1) {
-        i++ ;
-    }
+
+    printf("Heavy Easy Move\n");
+    printf("Anyone can move the world\n");
+
+	/* SysTick Configuration */
+	SysTick_Config(48000000U/1000U); //This only applies for ARM Cores with SysTick capability
+
+	/* Scheduler Initialization and tasks initialization  */
+	gsc_sch_core_Init();
+
+	/* Execute Scheduler */
+	gsc_sch_core_exec();
+
     return 0 ;
 }
+
+void SysTick_Handler(void)
+ {
+
+   sys_tick_counter++;
+   gsc_sch_core_tick_isr();
+
+
+ }
