@@ -38,7 +38,7 @@
 #include "fsl_port.h"
 #include "fsl_clock.h"
 
-	unsigned char lub_estadoTRG;
+	unsigned char loop_estadoTRG;
 
 void APP_TRG_ON_OFF_0 (void)
 {
@@ -159,6 +159,6 @@ void COUNTER_TRG (void)
 	{
 		lul_counter_TRG--;
 	}
-	while (1u == lub_estadoTRG);
+	while (1u == loop_estadoTRG);
 	}
 

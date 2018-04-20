@@ -125,6 +125,7 @@
  **************************************************************/
  void periodic_tasks_exec_1Mtks(void)
  {
-	 app_rgb_led_fsm();
+	app_rgb_led_fsm();
+
  }
  
