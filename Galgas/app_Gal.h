@@ -13,6 +13,7 @@
  * Public Prototypes
  ******************************************/
 
+
 extern void app_ADC_Init (void);
 extern void app_ADC_Task(void);
 

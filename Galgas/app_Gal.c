@@ -13,7 +13,6 @@
 #include "fsl_adc16.h"
 #include "app_Gal.h"
 
-
  /******************************************
  * Private Macros
  ******************************************/
@@ -30,9 +29,6 @@
  ******************************************/
 static T_UWORD ruw_ADCValue[4];
 static T_UBYTE rub_ConversionInProgressFlag = FALSE;
-
-
-
 
 
  /******************************************
