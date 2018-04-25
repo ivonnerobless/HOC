@@ -51,6 +51,7 @@ void periodic_tasks_init_MclDrvs(void)
 void periodic_tasks_init_SysDrvs(void)
 {
 	init_leds();
+	app_Speed_Init();
 }
 
 /**************************************************************
