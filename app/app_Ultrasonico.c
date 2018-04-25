@@ -51,6 +51,8 @@ T_UBYTE rub_SensorIndex;
 static T_UBYTE rub_TimeTemp;
 T_UBYTE raub_Time[4];
 
+T_UBYTE ultrasonic_ready;
+
 void APP_TRG_ON_OFF_0 (void)
 {
 	/* CADA RECEPCION DE SEÑAL PONER EN 0*/
@@ -159,6 +161,8 @@ void app_config_init_counter (void)
 	rub_IsMeasureInProgress = 0u;
 	//Initialize Sensor Index
 	rub_SensorIndex = 0u;
+	//ultrasonic ready
+	ultrasonic_ready = 0u;
 
 }
 
@@ -203,43 +207,24 @@ void app_Ultrasonicos_Task(void)
 	//Check if a measure is not in progress
 	if(FALSE == rub_IsMeasureInProgress)
 	{
-		//Check if was triggered already
-		if(FALSE == rub_IsTriggered)
-		{
 			//Trigger
 			APP_TRG_ON_OFF_0();
-			//Set trigger
-			rub_IsTriggered = TRUE;
+
 			//Initialize Temp Variable for counting
 			rub_TimeTemp = 0u;
-		}
+
+			//Enable measure function every 100us
+			APP_ULTRASONICO_MACRO_ENABLE_PIN_INTERRUPT;
+			//Set In Progress Flag
+			rub_IsMeasureInProgress = TRUE;
+
 		//Wait for Measure
 		//Sensor was triggered - Wait for High Echo
-		else
-		{
-			T_UBYTE lub_EchoValue;
-
-			//Read the ECHO input and store it in a local variable
-			lub_EchoValue = GPIO_ReadPinInput(PORTC, APP_ECHO_PIN_NUMBER_0);
-
-			//Check if ECHO is high
-			if(TRUE == lub_EchoValue)
-			{
-				//Enable measure function every 100us
-				APP_ULTRASONICO_MACRO_ENABLE_PIN_INTERRUPT;
-				//Set In Progress Flag
-				rub_IsMeasureInProgress = TRUE;
-			}
-			//ECHO is not HIGH
-			else
-			{
-				//Do Nothing -Wait for ECHO
-			}
-		}
 	}
 	else
 	{
 		//Do Nothing - Wait for measure task finish
+
 	}
 }
 
@@ -254,23 +239,53 @@ void app_Ultrasonicos_ISR_Task(void)
 	T_UBYTE lub_EchoValue;
 	/* Clear interrupt flag.*/
 	PIT_ClearStatusFlags(PIT, kPIT_Chnl_0, kPIT_TimerFlag);
+	if(TRUE == ultrasonic_ready)
 
-	//Check PIN State
-	lub_EchoValue = GPIO_ReadPinInput(PORTC, APP_ECHO_PIN_NUMBER_0);
-	//ECHO Is High - Count
-	if(TRUE == lub_EchoValue)
 	{
-		//Count
-		rub_TimeTemp++;
+		//Check PIN State
+		lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_0);
+		//ECHO Is High - Count
+		if(TRUE == lub_EchoValue)
+		{
+			//Count
+			rub_TimeTemp++;
+		}
+		//ECHO is low - Stop Count, disable Interrupt
+		else
+		{
+			//Stop Count
+			rub_IsMeasureInProgress = FALSE;
+			//Disable Interrupt
+			APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT;
+			//Store measure
+			raub_Time[0u] = rub_TimeTemp;
+
+			ultrasonic_ready = FALSE;
+
+
+		}
+
 	}
-	//ECHO is low - Stop Count, disable Interrupt
-	else
-	{
-		//Stop Count
-		rub_IsMeasureInProgress = FALSE;
-		//Disable Interrupt
-		APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT;
-		//Store measure
-		raub_Time[0u] = rub_TimeTemp;
+
+	else {
+
+		//Check pin
+		lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_0);
+		if(TRUE == lub_EchoValue)
+		{
+			ultrasonic_ready = TRUE;
+			APP_TRG_OFF_ON_0();
+		}
+		else
+		{
+
+			//Do nothing;
+
+		}
+
+
 	}
+	GPIO_TogglePinsOutput(GPIOC, 1<<3);
+
+
 }
