@@ -14,6 +14,7 @@ void app_Speed_Init(void)
 	/* Module Init */
 
 	//Variables
+	rub_Speed = MACRO_SPEED_STOP_VALUE;
 	//States
 	//Flags
 	//HW
