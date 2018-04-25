@@ -27,65 +27,76 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 /**
  * @file    app_Ultrasonico.c
  * @brief   Application entry point.
  */
-#include "app_Ultrasonico.h"
+
 #include "MKL25Z4.h"
+#include "fsl_common.h"
 #include "fsl_gpio.h"
 #include "fsl_port.h"
 #include "fsl_clock.h"
+#include "fsl_pit.h"
+#include "app_Ultrasonico.h"
+#include "stdtypedef.h"
 
-	unsigned char lub_estadoTRG;
+unsigned char lub_estadoTRG;
+
+T_UBYTE rub_IsTriggered;
+T_UBYTE rub_IsMeasureInProgress;
+T_UBYTE rub_SensorIndex;
+
+static T_UBYTE rub_TimeTemp;
+T_UBYTE raub_Time[4];
 
 void APP_TRG_ON_OFF_0 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 0*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_0, 0u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 0*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_0, 0u);
 }
 
 void APP_TRG_OFF_ON_0 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_0, 1u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 1*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_0, 1u);
 }
 
 void APP_TRG_ON_OFF_1 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 0*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_1, 0u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 0*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_1, 0u);
 }
 
 void APP_TRG_OFF_ON_1 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_1, 1u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 1*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_1, 1u);
 }
 
 void APP_TRG_ON_OFF_2 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 0*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_2, 0u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 0*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_2, 0u);
 }
 
 void APP_TRG_OFF_ON_2 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_2, 1u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 1*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_2, 1u);
 }
 
 void APP_TRG_ON_OFF_3 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 0*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_3, 0u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 0*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_3, 0u);
 }
 
 void APP_TRG_OFF_ON_3 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_3, 1u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 1*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_3, 1u);
 }
 
 
@@ -107,28 +118,47 @@ void app_config_init_counter (void)
 	PORT_SetPinConfig(PORTC, APP_TRG_PIN_NUMBER_3, &ls_port_config);
 
 
-/*GPIO AS OUTPUT*/
+	/*GPIO AS OUTPUT*/
 
 	gpio_pin_config_t ls_PinConfig;
 
-		ls_PinConfig.pinDirection = kGPIO_DigitalOutput;
-		ls_PinConfig.outputLogic = 1u;
+	ls_PinConfig.pinDirection = kGPIO_DigitalOutput;
+	ls_PinConfig.outputLogic = 1u;
 
 
-		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_0, &ls_PinConfig);
-		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_1, &ls_PinConfig);
-		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_2, &ls_PinConfig);
-		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_3, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_0, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_1, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_2, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_3, &ls_PinConfig);
 
 
 
-		/*Input config*/
-		ls_PinConfig.pinDirection = kGPIO_DigitalInput;
+	/*Input config*/
+	ls_PinConfig.pinDirection = kGPIO_DigitalInput;
 
-		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_0, &ls_PinConfig);
-		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_1, &ls_PinConfig);
-		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_2, &ls_PinConfig);
-		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_3, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_0, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_1, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_2, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_3, &ls_PinConfig);
+
+	pit_config_t ls_PitConfig;
+
+	PIT_GetDefaultConfig(&ls_PitConfig);
+
+	/* Enable at the NVIC */
+	EnableIRQ(PIT_IRQn);
+
+	/* Init pit module */
+	PIT_Init(PIT, &ls_PitConfig);
+
+	//Clear triggered flag
+	rub_IsTriggered = FALSE;
+	//Clear Time Temp Variable
+	rub_TimeTemp = 0u;
+	//Clear In progress flag
+	rub_IsMeasureInProgress = 0u;
+	//Initialize Sensor Index
+	rub_SensorIndex = 0u;
 
 }
 
@@ -150,7 +180,7 @@ unsigned long APP_COUNTER_TIME (unsigned char lub_pin_number)
 
 
 void COUNTER_TRG (void)
-	{
+{
 	unsigned char lul_counter_TRG;
 
 	lul_counter_TRG = 255u;
@@ -160,5 +190,87 @@ void COUNTER_TRG (void)
 		lul_counter_TRG--;
 	}
 	while (1u == lub_estadoTRG);
-	}
+}
 
+/******************************************************/
+/* Name: app_Ultrasonicos_Task                        */
+/* Description: This function will manage all the
+ * 				ultrasonic tasks needed for the correct
+ * 				functionality of this module          */
+/******************************************************/
+void app_Ultrasonicos_Task(void)
+{
+	//Check if a measure is not in progress
+	if(FALSE == rub_IsMeasureInProgress)
+	{
+		//Check if was triggered already
+		if(FALSE == rub_IsTriggered)
+		{
+			//Trigger
+			APP_TRG_ON_OFF_0();
+			//Set trigger
+			rub_IsTriggered = TRUE;
+			//Initialize Temp Variable for counting
+			rub_TimeTemp = 0u;
+		}
+		//Wait for Measure
+		//Sensor was triggered - Wait for High Echo
+		else
+		{
+			T_UBYTE lub_EchoValue;
+
+			//Read the ECHO input and store it in a local variable
+			lub_EchoValue = GPIO_ReadPinInput(PORTC, APP_ECHO_PIN_NUMBER_0);
+
+			//Check if ECHO is high
+			if(TRUE == lub_EchoValue)
+			{
+				//Enable measure function every 100us
+				APP_ULTRASONICO_MACRO_ENABLE_PIN_INTERRUPT;
+				//Set In Progress Flag
+				rub_IsMeasureInProgress = TRUE;
+			}
+			//ECHO is not HIGH
+			else
+			{
+				//Do Nothing -Wait for ECHO
+			}
+		}
+	}
+	else
+	{
+		//Do Nothing - Wait for measure task finish
+	}
+}
+
+
+/******************************************************/
+/* Name: app_Ultrasonicos_ISR_Task                    */
+/* Description: This function will manage the ISR for
+ * 				Measure the ECHO PIN        	      */
+/******************************************************/
+void app_Ultrasonicos_ISR_Task(void)
+{
+	T_UBYTE lub_EchoValue;
+	/* Clear interrupt flag.*/
+	PIT_ClearStatusFlags(PIT, kPIT_Chnl_0, kPIT_TimerFlag);
+
+	//Check PIN State
+	lub_EchoValue = GPIO_ReadPinInput(PORTC, APP_ECHO_PIN_NUMBER_0);
+	//ECHO Is High - Count
+	if(TRUE == lub_EchoValue)
+	{
+		//Count
+		rub_TimeTemp++;
+	}
+	//ECHO is low - Stop Count, disable Interrupt
+	else
+	{
+		//Stop Count
+		rub_IsMeasureInProgress = FALSE;
+		//Disable Interrupt
+		APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT;
+		//Store measure
+		raub_Time[0u] = rub_TimeTemp;
+	}
+}
