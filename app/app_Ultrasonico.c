@@ -47,6 +47,7 @@ unsigned char lub_estadoTRG;
 T_UBYTE rub_IsTriggered;
 T_UBYTE rub_IsMeasureInProgress;
 T_UBYTE rub_SensorIndex;
+T_UBYTE rub_NumIntentos;
 
 static T_UBYTE rub_TimeTemp;
 T_UBYTE raub_Time[4];
@@ -163,6 +164,9 @@ void app_config_init_counter (void)
 	rub_SensorIndex = 0u;
 	//ultrasonic ready
 	ultrasonic_ready = 0u;
+	//intentos
+	rub_NumIntentos=0u;
+
 
 }
 
@@ -274,11 +278,10 @@ void app_Ultrasonicos_ISR_Task(void)
 		else
 		{
 
-		 int NumIntentos;
-         NumIntentos=0;
+
 			//Do nothing;
 
-			if(NumIntentos==5){
+			if(rub_NumIntentos==5){
 
 				//Stop Count
 			rub_IsMeasureInProgress = FALSE;
@@ -293,7 +296,7 @@ void app_Ultrasonicos_ISR_Task(void)
 
 			}
 			else{
-					NumIntentos++;
+					rub_NumIntentos++;
 			}
 
 
