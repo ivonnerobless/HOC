@@ -204,12 +204,15 @@ void COUNTER_TRG (void)
 /******************************************************/
 void app_Ultrasonicos_Task(void)
 {
+	/*int selector;
+    selector = 0u; */
 	//Check if a measure is not in progress
 	if(FALSE == rub_IsMeasureInProgress)
 	{
+		APP_TRG_ON_OFF_0();
 			//Trigger
-			APP_TRG_ON_OFF_0();
-
+		//Set trigger
+			rub_IsTriggered = TRUE;
 			//Initialize Temp Variable for counting
 			rub_TimeTemp = 0u;
 
@@ -220,11 +223,31 @@ void app_Ultrasonicos_Task(void)
 
 		//Wait for Measure
 		//Sensor was triggered - Wait for High Echo
+
 	}
 	else
 	{
 		//Do Nothing - Wait for measure task finish
+		APP_TRG_OFF_ON_0();
+		/*switch(selector)
+		{
+		case 1:
+			APP_TRG_OFF_ON_0();
+		break;
+		case 2:
+			APP_TRG_OFF_ON_1();
+		break;
+		case 3:
+			APP_TRG_OFF_ON_2();
+		break;
+		case 4:
+			APP_TRG_OFF_ON_3();
+		break;
 
+
+
+		}
+		*/
 	}
 }
 
@@ -243,6 +266,7 @@ void app_Ultrasonicos_ISR_Task(void)
 
 	{
 		//Check PIN State
+
 		lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_0);
 		//ECHO Is High - Count
 		if(TRUE == lub_EchoValue)
@@ -258,11 +282,12 @@ void app_Ultrasonicos_ISR_Task(void)
 			//Disable Interrupt
 			APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT;
 			//Store measure
+
 			raub_Time[0u] = rub_TimeTemp;
 
 			ultrasonic_ready = FALSE;
 
-
+			APP_TRG_OFF_ON_0();
 		}
 
 	}
@@ -274,18 +299,15 @@ void app_Ultrasonicos_ISR_Task(void)
 		if(TRUE == lub_EchoValue)
 		{
 			ultrasonic_ready = TRUE;
-			APP_TRG_OFF_ON_0();
 		}
 		else
 		{
 
 			//Do nothing;
 
+
 		}
 
 
 	}
-	GPIO_TogglePinsOutput(GPIOC, 1<<3);
-
-
 }
