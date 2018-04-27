@@ -10,6 +10,5 @@
 
 #define MACRO_POWER_STOP_VALUE	0u
 
-
 #endif /* SW_CALCULOS_POWER_H_ */
 

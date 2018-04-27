@@ -12,7 +12,6 @@
 #include "stdtypedef.h"
 #include "SW_Calculos_Power.h"
 
-
 T_UBYTE rub_Power;
 
 
