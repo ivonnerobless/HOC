@@ -21,6 +21,7 @@
 		PIT_DisableInterrupts(PIT, kPIT_Chnl_0, kPIT_TimerInterruptEnable);\
 		PIT_StopTimer(PIT, kPIT_Chnl_0)
 
+
 #define APP_TRG 0u
 
 #define APP_ECHO_PIN_NUMBER_0   12u

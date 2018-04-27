@@ -166,35 +166,6 @@ void app_config_init_counter (void)
 
 }
 
-unsigned long APP_COUNTER_TIME (unsigned char lub_pin_number)
-{
-	unsigned long lul_TIME;
-
-	lul_TIME = 0u;
-
-	do
-	{
-		lul_TIME++;
-	}
-	while (0u == GPIO_ReadPinInput(GPIOC, lub_pin_number));
-	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_0, 0u);
-
-	return lul_TIME;
-}
-
-
-void COUNTER_TRG (void)
-{
-	unsigned char lul_counter_TRG;
-
-	lul_counter_TRG = 255u;
-
-	do
-	{
-		lul_counter_TRG--;
-	}
-	while (1u == lub_estadoTRG);
-}
 
 /******************************************************/
 /* Name: app_Ultrasonicos_Task                        */
@@ -303,7 +274,29 @@ void app_Ultrasonicos_ISR_Task(void)
 		else
 		{
 
+		 int NumIntentos;
+         NumIntentos=0;
 			//Do nothing;
+
+			if(NumIntentos==5){
+
+				//Stop Count
+			rub_IsMeasureInProgress = FALSE;
+				//Disable Interrupt
+
+		       //Store measure
+			raub_Time[0u] = rub_TimeTemp;
+			ultrasonic_ready = FALSE;
+
+			APP_TRG_OFF_ON_0();
+
+
+			}
+			else{
+					NumIntentos++;
+			}
+
+
 
 
 		}
