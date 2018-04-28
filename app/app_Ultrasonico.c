@@ -184,6 +184,20 @@ void app_Ultrasonicos_Task(void)
 	//Check if a measure is not in progress
 	if(FALSE == rub_IsMeasureInProgress)
 	{
+		//select the ultasonic sensor
+		/*switch (){
+
+		case 1: APP_TRG_ON_OFF_0()
+				break;
+		case 2: APP_TRG_ON_OFF_1()
+						break;
+		case 3: APP_TRG_ON_OFF_2()
+						break;
+		case 4: APP_TRG_ON_OFF_3()
+						break;
+
+
+		}*/
 		APP_TRG_ON_OFF_0();
 			//Trigger
 		//Set trigger
@@ -204,6 +218,7 @@ void app_Ultrasonicos_Task(void)
 	{
 		//Do Nothing - Wait for measure task finish
 		APP_TRG_OFF_ON_0();
+		//Select the ultrasonic sensor
 		/*switch(selector)
 		{
 		case 1:
@@ -248,6 +263,26 @@ void app_Ultrasonicos_ISR_Task(void)
 		{
 			//Count
 			rub_TimeTemp++;
+
+		/*	if(rub_TimeTemp==5){
+
+				//Stop Count
+				rub_IsMeasureInProgress = FALSE;
+					//Disable Interrupt
+
+			       //Store measure
+				raub_Time[0u] = rub_TimeTemp;
+				ultrasonic_ready = FALSE;
+
+				APP_TRG_OFF_ON_0();
+
+			}
+
+			else {
+
+
+			} */
+
 		}
 		//ECHO is low - Stop Count, disable Interrupt
 		else
@@ -258,9 +293,28 @@ void app_Ultrasonicos_ISR_Task(void)
 			APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT;
 			//Store measure
 
+			/*for(raub_Time[0u] 1>){
+				raub_Time[0u]
+
+
+
+			}*/
 			raub_Time[0u] = rub_TimeTemp;
 
 			ultrasonic_ready = FALSE;
+			/*
+			 switch(){
+
+			case 1: APP_TRG_OFF_ON_0();
+			break
+			case 2: APP_TRG_OFF_ON_1();
+						break
+			case 3: APP_TRG_OFF_ON_2();
+						break
+			case 4: APP_TRG_OFF_ON_3();
+						break
+
+			} */
 
 			APP_TRG_OFF_ON_0();
 		}
@@ -288,9 +342,28 @@ void app_Ultrasonicos_ISR_Task(void)
 				//Disable Interrupt
 
 		       //Store measure
+			/*for(raub_Time[0u]= rub_TimeTemp; 1>){
+							raub_Time[0u]
+
+
+
+						}*/
 			raub_Time[0u] = rub_TimeTemp;
 			ultrasonic_ready = FALSE;
 
+			/*
+					 switch(){
+
+					case 1: APP_TRG_OFF_ON_0();
+					break
+					case 2: APP_TRG_OFF_ON_1();
+								break
+					case 3: APP_TRG_OFF_ON_2();
+								break
+					case 4: APP_TRG_OFF_ON_3();
+								break
+
+					} */
 			APP_TRG_OFF_ON_0();
 
 
