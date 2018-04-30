@@ -15,7 +15,13 @@
 /******************************************
  * Private Macros
  ******************************************/
-#define rub_Force 0u
+
+
+
+/******************************************
+ * Private Variables
+ ******************************************/
+T_UBYTE rub_Force;
 
 /******************************************
  * Private Prototypes
@@ -48,7 +54,27 @@ void app_Speed_Init(void)
 
 T_UBYTE app_Speed_Force2Speed(T_UBYTE lub_Force)
 {
-	return (T_UBYTE)(lub_Force * MACRO_SPEED_MULTIPLIER);
+
+
+	T_UWORD luw_Returnvalue;
+
+	luw_Returnvalue = ((T_UWORD)lub_Force*MACRO_CONSTANT_SPEED)/10u;
+
+
+		if(luw_Returnvalue > MACRO_SPEED_MAX)
+		{
+
+			luw_Returnvalue = MACRO_SPEED_MAX;
+
+		}
+		else
+		{
+			//nothing
+
+		}
+
+	return (T_UBYTE)(luw_Returnvalue);
+
 }
 
 
