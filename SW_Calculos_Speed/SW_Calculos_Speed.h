@@ -18,6 +18,7 @@
 #define MACRO_SPEED_MAX			200u // 200rpm
 #define MACRO_CONSTANT_SPEED	40u
 
+
 //#define rub_Force 30u
 
 #endif /* SW_CALCULOS_SPEED_H_ */
