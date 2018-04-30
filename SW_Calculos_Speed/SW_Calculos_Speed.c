@@ -76,7 +76,6 @@ T_UBYTE app_Speed_Force2Speed(T_UBYTE lub_Force)
 
 }
 
-
 /***********************************************
  * Function Name: app_Speed_MngTask
  ***********************************************/
