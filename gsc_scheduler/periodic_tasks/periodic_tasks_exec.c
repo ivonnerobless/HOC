@@ -28,6 +28,7 @@
 #include "periodic_tasks_exec.h"
 #include "periodic_tasks_modules.h"
 
+T_UBYTE rub_Force;
 
 /**************************************************************
  *  Name                 : periodic_tasks_exec_5tks
@@ -40,7 +41,7 @@
  **************************************************************/
  void periodic_tasks_exec_5tks(void)
  {
-	;
+
 
  }
  
@@ -55,7 +56,7 @@
  **************************************************************/
  void periodic_tasks_exec_10tks(void)
  {
-	
+	 app_Speed_MngTask();
  }
  
  /**************************************************************
