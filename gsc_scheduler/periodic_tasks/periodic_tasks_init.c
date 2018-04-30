@@ -63,7 +63,7 @@ void periodic_tasks_init_SysDrvs(void)
  **************************************************************/
  void periodic_tasks_init_task_5tks(void)
  {
-
+	 app_config_init_counter();
  }
  
  /**************************************************************

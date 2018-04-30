@@ -40,7 +40,7 @@
  **************************************************************/
  void periodic_tasks_exec_5tks(void)
  {
-	;
+	 app_Ultrasonicos_Task();
 
  }
  
