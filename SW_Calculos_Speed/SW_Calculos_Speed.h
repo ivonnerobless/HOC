@@ -18,6 +18,8 @@
 #define MACRO_SPEED_MAX			200u // 200rpm
 #define MACRO_CONSTANT_SPEED	40u
 
+extern void app_Speed_Init(void);
+extern void app_Speed_MngTask(void);
 
 //#define rub_Force 30U//
 

@@ -28,8 +28,6 @@
 #include "periodic_tasks_exec.h"
 #include "periodic_tasks_modules.h"
 
-T_UBYTE rub_Force;
-
 /**************************************************************
  *  Name                 : periodic_tasks_exec_5tks
  *	ID					 : TASK_5TKS
@@ -41,8 +39,7 @@ T_UBYTE rub_Force;
  **************************************************************/
  void periodic_tasks_exec_5tks(void)
  {
-
-
+	 app_Ultrasonicos_Task();
  }
  
  /**************************************************************

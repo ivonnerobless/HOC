@@ -58,6 +58,7 @@ extern void APP_TRG_ON_OFF_3 (void);
 extern void APP_TRG_OFF_ON_3 (void);
 extern void app_config_init_counter (void);
 extern void COUNTER_TRG (void);
-
+extern void app_Ultrasonicos_Task(void);
+extern void app_Ultrasonicos_ISR_Task(void);
 
 #endif /* APP_ULTRASONICO_H_ */
