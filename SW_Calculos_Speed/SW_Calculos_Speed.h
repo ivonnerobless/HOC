@@ -19,6 +19,6 @@
 #define MACRO_CONSTANT_SPEED	40u
 
 
-//#define rub_Force 30u
+//#define rub_Force 30U//
 
 #endif /* SW_CALCULOS_SPEED_H_ */
