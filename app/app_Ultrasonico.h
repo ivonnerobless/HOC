@@ -20,7 +20,9 @@
 #define APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT \
 		PIT_DisableInterrupts(PIT, kPIT_Chnl_0, kPIT_TimerInterruptEnable);\
 		PIT_StopTimer(PIT, kPIT_Chnl_0)
-
+#define APP_ULTRASONICO_MACRO_TIME_MAX 90U
+#define APP_ULTRASONICO_MACRO_NUM_INTENTOS 5U
+#define APP_ULTRASONICO_MACRO_NUM_SENSORES N_SENSORS
 
 #define APP_TRG 0u
 
@@ -36,6 +38,15 @@
 
 #define APP_TRG_ON		    GPIO_WritePinOutput(GPIOB, APP_TRG_PIN_NUMBER, 0u)
 #define APP_TRG_OFF		    GPIO_WritePinOutput(GPIOB, APP_TRG_PIN_NUMBER, 1u)
+
+enum
+{
+	READ_SENSOR1,
+	READ_SENSOR2,
+	READ_SENSOR3,
+	READ_SENSOR4,
+	N_SENSORS
+};
 
 extern void APP_TRG_ON_OFF_0 (void);
 extern void APP_TRG_OFF_ON_0 (void);

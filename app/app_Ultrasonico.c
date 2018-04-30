@@ -48,9 +48,9 @@ T_UBYTE rub_IsTriggered;
 T_UBYTE rub_IsMeasureInProgress;
 T_UBYTE rub_SensorIndex;
 T_UBYTE rub_NumIntentos;
-
+T_UBYTE rub_Selector;
 static T_UBYTE rub_TimeTemp;
-T_UBYTE raub_Time[4];
+T_UBYTE raub_Time[APP_ULTRASONICO_MACRO_NUM_SENSORES];
 
 T_UBYTE ultrasonic_ready;
 
@@ -166,6 +166,8 @@ void app_config_init_counter (void)
 	ultrasonic_ready = 0u;
 	//intentos
 	rub_NumIntentos=0u;
+	//selector
+	rub_Selector=0;
 
 
 }
@@ -179,36 +181,40 @@ void app_config_init_counter (void)
 /******************************************************/
 void app_Ultrasonicos_Task(void)
 {
-	/*int selector;
-    selector = 0u; */
+
 	//Check if a measure is not in progress
 	if(FALSE == rub_IsMeasureInProgress)
 	{
 		//select the ultasonic sensor
-		/*switch (){
+		switch(rub_Selector)
+		{
+		default:
+			rub_Selector=0;
+		case READ_SENSOR1:
+			APP_TRG_ON_OFF_0();
+			break;
+		case READ_SENSOR2:
+			APP_TRG_ON_OFF_1();
+			break;
+		case READ_SENSOR3:
+			APP_TRG_ON_OFF_2();
+			break;
+		case READ_SENSOR4:
+			APP_TRG_ON_OFF_3();
+			break;
 
-		case 1: APP_TRG_ON_OFF_0()
-				break;
-		case 2: APP_TRG_ON_OFF_1()
-						break;
-		case 3: APP_TRG_ON_OFF_2()
-						break;
-		case 4: APP_TRG_ON_OFF_3()
-						break;
+		}
 
-
-		}*/
-		APP_TRG_ON_OFF_0();
-			//Trigger
+		//Trigger
 		//Set trigger
-			rub_IsTriggered = TRUE;
-			//Initialize Temp Variable for counting
-			rub_TimeTemp = 0u;
-
-			//Enable measure function every 100us
-			APP_ULTRASONICO_MACRO_ENABLE_PIN_INTERRUPT;
-			//Set In Progress Flag
-			rub_IsMeasureInProgress = TRUE;
+		rub_IsTriggered = TRUE;
+		//Initialize Temp Variable for counting
+		rub_TimeTemp = 0u;
+		rub_NumIntentos = 0u;
+		//Enable measure function every 100us
+		APP_ULTRASONICO_MACRO_ENABLE_PIN_INTERRUPT;
+		//Set In Progress Flag
+		rub_IsMeasureInProgress = TRUE;
 
 		//Wait for Measure
 		//Sensor was triggered - Wait for High Echo
@@ -216,28 +222,27 @@ void app_Ultrasonicos_Task(void)
 	}
 	else
 	{
-		//Do Nothing - Wait for measure task finish
-		APP_TRG_OFF_ON_0();
+
 		//Select the ultrasonic sensor
-		/*switch(selector)
+		switch(rub_Selector)
 		{
-		case 1:
+		default:
+			rub_Selector=0;
+		case READ_SENSOR1:
 			APP_TRG_OFF_ON_0();
-		break;
-		case 2:
+			break;
+		case READ_SENSOR2:
 			APP_TRG_OFF_ON_1();
-		break;
-		case 3:
+			break;
+		case READ_SENSOR3:
 			APP_TRG_OFF_ON_2();
-		break;
-		case 4:
+			break;
+		case READ_SENSOR4:
 			APP_TRG_OFF_ON_3();
-		break;
-
-
+			break;
 
 		}
-		*/
+
 	}
 }
 
@@ -257,31 +262,64 @@ void app_Ultrasonicos_ISR_Task(void)
 	{
 		//Check PIN State
 
-		lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_0);
+		switch(rub_Selector)
+		{
+		case READ_SENSOR1:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_0);
+		}break;
+		case READ_SENSOR2:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_1);
+		}break;
+		case READ_SENSOR3:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_2);
+		}break;
+		case READ_SENSOR4:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_3);
+		}break;
+		}
+
 		//ECHO Is High - Count
 		if(TRUE == lub_EchoValue)
 		{
 			//Count
 			rub_TimeTemp++;
 
-		/*	if(rub_TimeTemp==5){
+			if(rub_TimeTemp>=APP_ULTRASONICO_MACRO_TIME_MAX){
+
+
 
 				//Stop Count
 				rub_IsMeasureInProgress = FALSE;
-					//Disable Interrupt
+				//Disable Interrupt
+				APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT;
+				//Store measure
+				raub_Time[rub_Selector] = APP_ULTRASONICO_MACRO_TIME_MAX;
 
-			       //Store measure
-				raub_Time[0u] = rub_TimeTemp;
+				if(rub_Selector < (APP_ULTRASONICO_MACRO_NUM_SENSORES-1U)){
+
+
+					rub_Selector++;
+
+				}
+				else{
+
+					rub_Selector=0;
+				}
 				ultrasonic_ready = FALSE;
 
-				APP_TRG_OFF_ON_0();
+
+
 
 			}
 
 			else {
 
 
-			} */
+			}
 
 		}
 		//ECHO is low - Stop Count, disable Interrupt
@@ -293,30 +331,41 @@ void app_Ultrasonicos_ISR_Task(void)
 			APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT;
 			//Store measure
 
-			/*for(raub_Time[0u] 1>){
-				raub_Time[0u]
+
+			raub_Time[rub_Selector] = rub_TimeTemp;
+			if(rub_Selector < (APP_ULTRASONICO_MACRO_NUM_SENSORES-1U)){
 
 
+				rub_Selector++;
 
-			}*/
-			raub_Time[0u] = rub_TimeTemp;
+			}
+			else{
+
+				rub_Selector=0;
+			}
 
 			ultrasonic_ready = FALSE;
-			/*
-			 switch(){
 
-			case 1: APP_TRG_OFF_ON_0();
-			break
-			case 2: APP_TRG_OFF_ON_1();
-						break
-			case 3: APP_TRG_OFF_ON_2();
-						break
-			case 4: APP_TRG_OFF_ON_3();
-						break
+			switch(rub_Selector)
+			{
+			default:
+				rub_Selector=0;
+			case READ_SENSOR1:
+				APP_TRG_OFF_ON_0();
+				break;
+			case READ_SENSOR2:
+				APP_TRG_OFF_ON_1();
+				break;
+			case READ_SENSOR3:
+				APP_TRG_OFF_ON_2();
+				break;
+			case READ_SENSOR4:
+				APP_TRG_OFF_ON_3();
+				break;
 
-			} */
+			}
 
-			APP_TRG_OFF_ON_0();
+
 		}
 
 	}
@@ -324,7 +373,25 @@ void app_Ultrasonicos_ISR_Task(void)
 	else {
 
 		//Check pin
-		lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_0);
+		switch(rub_Selector)
+		{
+		case READ_SENSOR1:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_0);
+		}break;
+		case READ_SENSOR2:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_1);
+		}break;
+		case READ_SENSOR3:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_2);
+		}break;
+		case READ_SENSOR4:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_3);
+		}break;
+		}
 		if(TRUE == lub_EchoValue)
 		{
 			ultrasonic_ready = TRUE;
@@ -335,41 +402,56 @@ void app_Ultrasonicos_ISR_Task(void)
 
 			//Do nothing;
 
-			if(rub_NumIntentos==5){
+			if(rub_NumIntentos >=APP_ULTRASONICO_MACRO_NUM_INTENTOS){
 
 				//Stop Count
-			rub_IsMeasureInProgress = FALSE;
+				rub_IsMeasureInProgress = FALSE;
 				//Disable Interrupt
-
-		       //Store measure
-			/*for(raub_Time[0u]= rub_TimeTemp; 1>){
-							raub_Time[0u]
+				APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT;
+				//Store measure
 
 
+				raub_Time[rub_Selector] = 0xff;
 
-						}*/
-			raub_Time[0u] = rub_TimeTemp;
-			ultrasonic_ready = FALSE;
 
-			/*
-					 switch(){
+				ultrasonic_ready = FALSE;
 
-					case 1: APP_TRG_OFF_ON_0();
-					break
-					case 2: APP_TRG_OFF_ON_1();
-								break
-					case 3: APP_TRG_OFF_ON_2();
-								break
-					case 4: APP_TRG_OFF_ON_3();
-								break
 
-					} */
-			APP_TRG_OFF_ON_0();
+				switch(rub_Selector)
+				{
+				default:
+					rub_Selector=READ_SENSOR1;
+				case READ_SENSOR1:
+					APP_TRG_OFF_ON_0();
+					break;
+				case READ_SENSOR2:
+					APP_TRG_OFF_ON_1();
+					break;
+				case READ_SENSOR3:
+					APP_TRG_OFF_ON_2();
+					break;
+				case READ_SENSOR4:
+					APP_TRG_OFF_ON_3();
+					break;
+
+				}
+				if(rub_Selector < (APP_ULTRASONICO_MACRO_NUM_SENSORES-1U)){
+
+
+					rub_Selector++;
+
+				}
+				else{
+
+					rub_Selector=0;
+				}
+
 
 
 			}
 			else{
-					rub_NumIntentos++;
+				rub_NumIntentos++;
+
 			}
 
 
