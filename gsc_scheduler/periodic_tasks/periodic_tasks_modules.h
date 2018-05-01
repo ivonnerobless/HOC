@@ -32,6 +32,7 @@
 //#include "MyApplication.h"
 //#include "MyLowLayerDriver.h"
 #include "../app/RGB_LEDs.h"
+#include "SW_Calculos_Direction/SW_Calculos_Direction.h"
 /*============================================================================*/
 
 #endif
