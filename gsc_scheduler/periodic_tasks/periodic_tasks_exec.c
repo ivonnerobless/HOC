@@ -27,6 +27,11 @@
 /* -------- */
 #include "periodic_tasks_exec.h"
 #include "periodic_tasks_modules.h"
+#include "Galgas/app_Gal.h"
+#include "../../SW_Calculos_Weight/app_Calculos_Weight.h"
+
+
+
 
 /**************************************************************
  *  Name                 : periodic_tasks_exec_5tks
@@ -39,6 +44,7 @@
  **************************************************************/
  void periodic_tasks_exec_5tks(void)
  {
+	 app_ADC_Task();
 	 app_Ultrasonicos_Task();
  }
  
@@ -95,7 +101,7 @@
  **************************************************************/
  void periodic_tasks_exec_100tks(void)
  { 
-
+    app_RawDate_Task();
  }
  
  /**************************************************************

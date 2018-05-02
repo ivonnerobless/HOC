@@ -27,8 +27,9 @@
  /******************************************
  * Private Variables
  ******************************************/
-static T_UWORD ruw_ADCValue[4];
+T_UWORD ruw_ADCValue[4];
 static T_UBYTE rub_ConversionInProgressFlag = FALSE;
+T_UBYTE rub_ADCIndex=0;
 
 
  /******************************************
@@ -129,9 +130,9 @@ static T_UWORD app_ADC_GetValue(void)
  ***********************************************/
 void app_ADC_Task(void)
 {
-	int i=0;
-	while(1)
-	{
+
+
+
 		//Check if a conversion is in progress
 		if(TRUE == rub_ConversionInProgressFlag)
 		{
@@ -139,16 +140,16 @@ void app_ADC_Task(void)
 			if(TRUE == app_ADC_IsConversionCompleted())
 			{
 				//Store the ADC Value
-				ruw_ADCValue[i] = app_ADC_GetValue();
+				ruw_ADCValue[rub_ADCIndex] = app_ADC_GetValue();
 
 
 
 
 				//Clear conversion in progress flag
 				rub_ConversionInProgressFlag = FALSE;
-				i++;
-				if(i>4)
-					i=0;
+				rub_ADCIndex++;
+				if(rub_ADCIndex>4)
+					rub_ADCIndex=0;
 			}
 			else
 			{
@@ -158,19 +159,19 @@ void app_ADC_Task(void)
 		else
 		{
 			//Trigger the ADC Conversion
-			if(i==0)
+			if(rub_ADCIndex==0)
 				app_Gal_Trigger(APP_Gal1_CHANNEL);
 
-			else if (i==1)
+			else if (rub_ADCIndex==1)
 				app_Gal_Trigger(APP_Gal2_CHANNEL);
 
-			else if (i==2)
+			else if (rub_ADCIndex==2)
 				app_Gal_Trigger(APP_Gal3_CHANNEL);
 
-			else if (i==3)
+			else if (rub_ADCIndex==3)
 				app_Gal_Trigger(APP_Gal4_CHANNEL);
 
-			ruw_ADCValue[i] = app_ADC_GetValue();
+			ruw_ADCValue[rub_ADCIndex] = app_ADC_GetValue();
 
 
 
@@ -180,7 +181,7 @@ void app_ADC_Task(void)
 		}
 
 
-	}
+
 
 
 }
