@@ -12,5 +12,5 @@
 #define MACRO_WEIGHT_MIN	0u
 #define MACRO_CONSTANT		8u
 
-
+extern void app_RawDate_Task(void);
 #endif /* APP_CALCULOS_WEIGHT_H_ */
