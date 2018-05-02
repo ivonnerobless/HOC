@@ -8,7 +8,6 @@
 #ifndef APP_ULTRASONICO_H_
 #define APP_ULTRASONICO_H_
 
-#define app_Ultrasonicos_ISR_Task	PIT_IRQHandler
 
 #define APP_ULTRASONICO_MACRO_ENABLE_PIN_INTERRUPT	\
 		/* Set timer period for channel 0 */\
