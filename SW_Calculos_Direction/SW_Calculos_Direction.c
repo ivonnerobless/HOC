@@ -5,6 +5,7 @@
  *      Author: Ivonne Robles
  */
 
+
 #include "SW_Calculos_Direction.h"
 #include "MKL25Z4.h"
 #include "fsl_common.h"
@@ -70,6 +71,7 @@ T_EDIRECTION app_force2direction(T_UBYTE laub_WeightData[]){
 
 					lub_SensorIndex++;
 				}
+
 
 				else {
 
