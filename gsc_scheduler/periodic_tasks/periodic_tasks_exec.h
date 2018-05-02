@@ -29,6 +29,7 @@
 /* Includes */
 /* -------- */
 #include "stdtypedef.h"
+#include "SW_Calculos_Direction/SW_Calculos_Direction.h"
 
 
 /* Exported functions prototypes and macros */

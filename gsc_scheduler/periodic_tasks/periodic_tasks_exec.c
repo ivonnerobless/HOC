@@ -3,11 +3,11 @@
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Source:        periodic_tasks_exec.c
-* version:         1.0 
-* created_by:      MDRR
-* date_created:    July 31 2013 
-*=============================================================================*/
+ * C Source:        periodic_tasks_exec.c
+ * version:         1.0
+ * created_by:      MDRR
+ * date_created:    July 31 2013
+ *=============================================================================*/
 /* DESCRIPTION :  This file contains the periodic tasks definition.           */
 /*============================================================================*/
 /* FUNCTION COMMENT : Add here the user functionality, inside a periodic task */
@@ -71,12 +71,12 @@
  *  Return               : none
  *  Critical/explanation : no
  **************************************************************/
- void periodic_tasks_exec_20tks(void)
- {
+void periodic_tasks_exec_20tks(void)
+{
 
- }
- 
- /**************************************************************
+}
+
+/**************************************************************
  *  Name                 : periodic_tasks_exec_50tks
  *	ID					 : TASK_50TKS
  *  Description          : Container for functionality that is 
@@ -85,12 +85,12 @@
  *  Return               : none
  *  Critical/explanation : no
  **************************************************************/
- void periodic_tasks_exec_50tks(void)
- {
-	
- }
- 
- /**************************************************************
+void periodic_tasks_exec_50tks(void)
+{
+
+}
+
+/**************************************************************
  *  Name                 : periodic_tasks_exec_100tks
  *	ID					 : TASK_100TKS
  *  Description          : Container for functionality that is 
@@ -105,6 +105,7 @@
  }
  
  /**************************************************************
+
  *  Name                 : periodic_tasks_exec_500tks
  *	ID					 : TASK_500TKS
  *  Description          : Container for functionality that is 
@@ -113,12 +114,18 @@
  *  Return               : none
  *  Critical/explanation : no
  **************************************************************/
- void periodic_tasks_exec_500tks(void)
- {
+void periodic_tasks_exec_500tks(void)
+{
+	T_UBYTE laub_TestVector[5];
+	laub_TestVector[0]=100;
+	laub_TestVector[1]=100;
+	laub_TestVector[2]=200;
+	laub_TestVector[3]=200;
+	laub_TestVector[4]=150;
+	(void) app_force2direction(laub_TestVector);
+}
 
- }
- 
- /**************************************************************
+/**************************************************************
  *  Name                 : periodic_tasks_exec_1Mtks
  *	ID					 : TASK_1MTKS
  *  Description          : Container for functionality that is 
@@ -127,8 +134,9 @@
  *  Return               : none
  *  Critical/explanation : no
  **************************************************************/
- void periodic_tasks_exec_1Mtks(void)
- {
-	 app_rgb_led_fsm();
- }
- 
+void periodic_tasks_exec_1Mtks(void)
+{
+	app_rgb_led_fsm();
+
+}
+
