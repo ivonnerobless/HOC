@@ -23,7 +23,7 @@ T_EDIRECTION app_force2direction(T_UBYTE laub_WeightData[]){
 	T_UBYTE laub_data[APP_DIRECTION_MACRO];
 	T_UBYTE laub_Dir[APP_DIRECTION_MACRO];
 	T_UBYTE lub_dataindex;
-	T_UBYTE i,j;
+	T_UBYTE i;
 	T_UBYTE lub_SensorIndex;
 	T_EDIRECTION lub_return;
 	lub_SensorIndex = READ_front_left;
@@ -31,7 +31,7 @@ T_EDIRECTION app_force2direction(T_UBYTE laub_WeightData[]){
 	lub_dataindex=0;
 	lub_return = 0;
 	i=0;
-	j=0;
+
 	for(i = 0;i< APP_DIRECTION_MACRO;i++)
 	{
 		laub_data[i] = 0u;
@@ -86,22 +86,7 @@ T_EDIRECTION app_force2direction(T_UBYTE laub_WeightData[]){
 
 	}while(lub_IsDataAligned == FALSE);
 
-//	for(i=0;i<N_DIRECTION;i++)
-//	{
-//		for(j=i;j<N_DIRECTION;j++)
-//		{
-//			//Checar acomodo
-//			if(laub_WeightData[i] == laub_data[j])
-//			{
-//				laub_Dir[j] = i;
-//				j = N_DIRECTION;
-//			}
-//			else
-//			{
-//				//Do Nothing
-//			}
-//		}
-//	}
+
 
 	if((READ_front_left == laub_Dir[0] && READ_front_right == laub_Dir[1]) ||
 			(READ_front_left == laub_Dir[1] && READ_front_right == laub_Dir[0]))

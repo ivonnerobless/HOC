@@ -59,7 +59,7 @@ uint8_t g_accel_addr_found = 0x00;
 
 volatile bool completionFlag = false;
 volatile bool nakFlag = false;
-
+volatile bool isThereAccel = false;
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -331,7 +331,7 @@ static bool I2C_ReadAccelRegs(I2C_Type *base, uint8_t device_addr, uint8_t reg_a
  */
 void app_master(void)
 {
-    bool isThereAccel = false;
+
 
 
     I2C_MasterTransferCreateHandle(BOARD_ACCEL_I2C_BASEADDR, &g_m_handle, i2c_master_callback, NULL);
