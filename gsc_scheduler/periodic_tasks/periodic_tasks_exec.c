@@ -27,8 +27,12 @@
 /* -------- */
 #include "periodic_tasks_exec.h"
 #include "periodic_tasks_modules.h"
+#include "Galgas/app_Gal.h"
+#include "../../SW_Calculos_Weight/app_Calculos_Weight.h"
 
-T_UBYTE rub_Force;
+
+
+
 
 /**************************************************************
  *  Name                 : periodic_tasks_exec_5tks
@@ -41,6 +45,8 @@ T_UBYTE rub_Force;
  **************************************************************/
  void periodic_tasks_exec_5tks(void)
  {
+	 app_ADC_Task();
+	 app_RawDate_Task();
 
  }
  
@@ -56,6 +62,7 @@ T_UBYTE rub_Force;
  void periodic_tasks_exec_10tks(void)
  {
 	 app_Speed_MngTask();
+
  }
  
  /**************************************************************

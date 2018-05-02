@@ -13,9 +13,9 @@
  * Public Prototypes
  ******************************************/
 
+extern T_UWORD ruw_ADCValue[4];
 
 extern void app_ADC_Init (void);
 extern void app_ADC_Task(void);
-
 
 #endif /* APP_GAL_H_ */
