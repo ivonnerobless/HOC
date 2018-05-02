@@ -27,6 +27,8 @@
 /* -------- */
 #include "periodic_tasks_init.h"
 #include "periodic_tasks_modules.h"
+#include "Galgas/app_Gal.h"
+#include "../../SW_Calculos_Weight/app_Calculos_Weight.h"
 
 
 /**************************************************************
@@ -51,6 +53,7 @@ void periodic_tasks_init_MclDrvs(void)
 void periodic_tasks_init_SysDrvs(void)
 {
 	init_leds();
+	app_Speed_Init();
 }
 
 /**************************************************************
@@ -63,7 +66,8 @@ void periodic_tasks_init_SysDrvs(void)
  **************************************************************/
  void periodic_tasks_init_task_5tks(void)
  {
-
+	 app_ADC_Init();
+	 app_config_init_counter();
  }
  
  /**************************************************************

@@ -27,6 +27,10 @@
 /* -------- */
 #include "periodic_tasks_exec.h"
 #include "periodic_tasks_modules.h"
+#include "Galgas/app_Gal.h"
+#include "../../SW_Calculos_Weight/app_Calculos_Weight.h"
+
+
 
 
 /**************************************************************
@@ -38,13 +42,13 @@
  *  Return               : none
  *  Critical/explanation : no
  **************************************************************/
-void periodic_tasks_exec_5tks(void)
-{
-	;
-
-}
-
-/**************************************************************
+ void periodic_tasks_exec_5tks(void)
+ {
+	 app_ADC_Task();
+	 app_Ultrasonicos_Task();
+ }
+ 
+ /**************************************************************
  *  Name                 : periodic_tasks_exec_10tks
  *	ID					 : TASK_10TKS
  *  Description          : Container for functionality that is 
@@ -53,12 +57,12 @@ void periodic_tasks_exec_5tks(void)
  *  Return               : none
  *  Critical/explanation : no
  **************************************************************/
-void periodic_tasks_exec_10tks(void)
-{
-
-}
-
-/**************************************************************
+ void periodic_tasks_exec_10tks(void)
+ {
+	 app_Speed_MngTask();
+ }
+ 
+ /**************************************************************
  *  Name                 : periodic_tasks_exec_20tks
  *	ID					 : TASK_20TKS
  *  Description          : Container for functionality that is 
@@ -95,12 +99,13 @@ void periodic_tasks_exec_50tks(void)
  *  Return               : none
  *  Critical/explanation : no
  **************************************************************/
-void periodic_tasks_exec_100tks(void)
-{
+ void periodic_tasks_exec_100tks(void)
+ { 
+    app_RawDate_Task();
+ }
+ 
+ /**************************************************************
 
-}
-
-/**************************************************************
  *  Name                 : periodic_tasks_exec_500tks
  *	ID					 : TASK_500TKS
  *  Description          : Container for functionality that is 

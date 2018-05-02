@@ -27,65 +27,80 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 /**
  * @file    app_Ultrasonico.c
  * @brief   Application entry point.
  */
-#include "app_Ultrasonico.h"
+
+
 #include "MKL25Z4.h"
+#include "fsl_common.h"
 #include "fsl_gpio.h"
 #include "fsl_port.h"
 #include "fsl_clock.h"
+#include "fsl_pit.h"
+#include "app_Ultrasonico.h"
+#include "stdtypedef.h"
 
-	unsigned char lub_estadoTRG;
+unsigned char lub_estadoTRG;
+
+T_UBYTE rub_IsTriggered;
+T_UBYTE rub_IsMeasureInProgress;
+T_UBYTE rub_SensorIndex;
+T_UBYTE rub_NumIntentos;
+T_UBYTE rub_Selector;
+static T_UBYTE rub_TimeTemp;
+T_UBYTE raub_Time[APP_ULTRASONICO_MACRO_NUM_SENSORES];
+
+T_UBYTE ultrasonic_ready;
 
 void APP_TRG_ON_OFF_0 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 0*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_0, 0u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 0*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_0, 0u);
 }
 
 void APP_TRG_OFF_ON_0 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_0, 1u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 1*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_0, 1u);
 }
 
 void APP_TRG_ON_OFF_1 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 0*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_1, 0u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 0*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_1, 0u);
 }
 
 void APP_TRG_OFF_ON_1 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_1, 1u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 1*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_1, 1u);
 }
 
 void APP_TRG_ON_OFF_2 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 0*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_2, 0u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 0*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_2, 0u);
 }
 
 void APP_TRG_OFF_ON_2 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_2, 1u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 1*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_2, 1u);
 }
 
 void APP_TRG_ON_OFF_3 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 0*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_3, 0u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 0*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_3, 0u);
 }
 
 void APP_TRG_OFF_ON_3 (void)
 {
-		/* CADA RECEPCION DE SEÑAL PONER EN 1*/
-		GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_3, 1u);
+	/* CADA RECEPCION DE SEÑAL PONER EN 1*/
+	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_3, 1u);
 }
 
 
@@ -107,58 +122,344 @@ void app_config_init_counter (void)
 	PORT_SetPinConfig(PORTC, APP_TRG_PIN_NUMBER_3, &ls_port_config);
 
 
-/*GPIO AS OUTPUT*/
+	/*GPIO AS OUTPUT*/
 
 	gpio_pin_config_t ls_PinConfig;
 
-		ls_PinConfig.pinDirection = kGPIO_DigitalOutput;
-		ls_PinConfig.outputLogic = 1u;
+	ls_PinConfig.pinDirection = kGPIO_DigitalOutput;
+	ls_PinConfig.outputLogic = 1u;
 
 
-		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_0, &ls_PinConfig);
-		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_1, &ls_PinConfig);
-		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_2, &ls_PinConfig);
-		GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_3, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_0, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_1, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_2, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_TRG_PIN_NUMBER_3, &ls_PinConfig);
 
 
 
-		/*Input config*/
-		ls_PinConfig.pinDirection = kGPIO_DigitalInput;
+	/*Input config*/
+	ls_PinConfig.pinDirection = kGPIO_DigitalInput;
 
-		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_0, &ls_PinConfig);
-		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_1, &ls_PinConfig);
-		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_2, &ls_PinConfig);
-		GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_3, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_0, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_1, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_2, &ls_PinConfig);
+	GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_3, &ls_PinConfig);
+
+	pit_config_t ls_PitConfig;
+
+	PIT_GetDefaultConfig(&ls_PitConfig);
+
+	/* Enable at the NVIC */
+	EnableIRQ(PIT_IRQn);
+
+	/* Init pit module */
+	PIT_Init(PIT, &ls_PitConfig);
+
+	//Clear triggered flag
+	rub_IsTriggered = FALSE;
+	//Clear Time Temp Variable
+	rub_TimeTemp = 0u;
+	//Clear In progress flag
+	rub_IsMeasureInProgress = 0u;
+	//Initialize Sensor Index
+	rub_SensorIndex = 0u;
+	//ultrasonic ready
+	ultrasonic_ready = 0u;
+	//intentos
+	rub_NumIntentos=0u;
+	//selector
+	rub_Selector=0;
+
 
 }
 
-unsigned long APP_COUNTER_TIME (unsigned char lub_pin_number)
+
+/******************************************************/
+/* Name: app_Ultrasonicos_Task                        */
+/* Description: This function will manage all the
+ * 				ultrasonic tasks needed for the correct
+ * 				functionality of this module          */
+/******************************************************/
+void app_Ultrasonicos_Task(void)
 {
-	unsigned long lul_TIME;
 
-	lul_TIME = 0u;
-
-	do
+	//Check if a measure is not in progress
+	if(FALSE == rub_IsMeasureInProgress)
 	{
-		lul_TIME++;
-	}
-	while (0u == GPIO_ReadPinInput(GPIOC, lub_pin_number));
-	GPIO_WritePinOutput(GPIOC, APP_TRG_PIN_NUMBER_0, 0u);
+		//select the ultasonic sensor
+		switch(rub_Selector)
+		{
+		default:
+			rub_Selector=0;
+		case READ_SENSOR1:
+			APP_TRG_ON_OFF_0();
+			break;
+		case READ_SENSOR2:
+			APP_TRG_ON_OFF_1();
+			break;
+		case READ_SENSOR3:
+			APP_TRG_ON_OFF_2();
+			break;
+		case READ_SENSOR4:
+			APP_TRG_ON_OFF_3();
+			break;
 
-	return lul_TIME;
+		}
+
+		//Trigger
+		//Set trigger
+		rub_IsTriggered = TRUE;
+		//Initialize Temp Variable for counting
+		rub_TimeTemp = 0u;
+		rub_NumIntentos = 0u;
+		//Enable measure function every 100us
+		APP_ULTRASONICO_MACRO_ENABLE_PIN_INTERRUPT;
+		//Set In Progress Flag
+		rub_IsMeasureInProgress = TRUE;
+
+		//Wait for Measure
+		//Sensor was triggered - Wait for High Echo
+
+	}
+	else
+	{
+
+		//Select the ultrasonic sensor
+		switch(rub_Selector)
+		{
+		default:
+			rub_Selector=0;
+		case READ_SENSOR1:
+			APP_TRG_OFF_ON_0();
+			break;
+		case READ_SENSOR2:
+			APP_TRG_OFF_ON_1();
+			break;
+		case READ_SENSOR3:
+			APP_TRG_OFF_ON_2();
+			break;
+		case READ_SENSOR4:
+			APP_TRG_OFF_ON_3();
+			break;
+
+		}
+
+	}
 }
 
 
-void COUNTER_TRG (void)
+/******************************************************/
+/* Name: app_Ultrasonicos_ISR_Task                    */
+/* Description: This function will manage the ISR for
+ * 				Measure the ECHO PIN        	      */
+/******************************************************/
+void app_Ultrasonicos_ISR_Task(void)
+{
+	T_UBYTE lub_EchoValue;
+	/* Clear interrupt flag.*/
+	PIT_ClearStatusFlags(PIT, kPIT_Chnl_0, kPIT_TimerFlag);
+	if(TRUE == ultrasonic_ready)
+
 	{
-	unsigned char lul_counter_TRG;
+		//Check PIN State
 
-	lul_counter_TRG = 255u;
+		switch(rub_Selector)
+		{
+		case READ_SENSOR1:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_0);
+		}break;
+		case READ_SENSOR2:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_1);
+		}break;
+		case READ_SENSOR3:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_2);
+		}break;
+		case READ_SENSOR4:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_3);
+		}break;
+		}
 
-	do
-	{
-		lul_counter_TRG--;
+		//ECHO Is High - Count
+		if(TRUE == lub_EchoValue)
+		{
+			//Count
+			rub_TimeTemp++;
+
+			if(rub_TimeTemp>=APP_ULTRASONICO_MACRO_TIME_MAX){
+
+
+
+				//Stop Count
+				rub_IsMeasureInProgress = FALSE;
+				//Disable Interrupt
+				APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT;
+				//Store measure
+				raub_Time[rub_Selector] = APP_ULTRASONICO_MACRO_TIME_MAX;
+
+				if(rub_Selector < (APP_ULTRASONICO_MACRO_NUM_SENSORES-1U)){
+
+
+					rub_Selector++;
+
+				}
+				else{
+
+					rub_Selector=0;
+				}
+				ultrasonic_ready = FALSE;
+
+
+
+
+			}
+
+			else {
+
+
+			}
+
+		}
+		//ECHO is low - Stop Count, disable Interrupt
+		else
+		{
+			//Stop Count
+			rub_IsMeasureInProgress = FALSE;
+			//Disable Interrupt
+			APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT;
+			//Store measure
+
+
+			raub_Time[rub_Selector] = rub_TimeTemp;
+			if(rub_Selector < (APP_ULTRASONICO_MACRO_NUM_SENSORES-1U)){
+
+
+				rub_Selector++;
+
+			}
+			else{
+
+				rub_Selector=0;
+			}
+
+			ultrasonic_ready = FALSE;
+
+			switch(rub_Selector)
+			{
+			default:
+				rub_Selector=0;
+			case READ_SENSOR1:
+				APP_TRG_OFF_ON_0();
+				break;
+			case READ_SENSOR2:
+				APP_TRG_OFF_ON_1();
+				break;
+			case READ_SENSOR3:
+				APP_TRG_OFF_ON_2();
+				break;
+			case READ_SENSOR4:
+				APP_TRG_OFF_ON_3();
+				break;
+
+			}
+
+
+		}
+
 	}
-	while (1u == lub_estadoTRG);
-	}
 
+	else {
+
+		//Check pin
+		switch(rub_Selector)
+		{
+		case READ_SENSOR1:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_0);
+		}break;
+		case READ_SENSOR2:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_1);
+		}break;
+		case READ_SENSOR3:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_2);
+		}break;
+		case READ_SENSOR4:
+		{
+			lub_EchoValue = GPIO_ReadPinInput(GPIOC, APP_ECHO_PIN_NUMBER_3);
+		}break;
+		}
+		if(TRUE == lub_EchoValue)
+		{
+			ultrasonic_ready = TRUE;
+		}
+		else
+		{
+
+
+			//Do nothing;
+
+			if(rub_NumIntentos >=APP_ULTRASONICO_MACRO_NUM_INTENTOS){
+
+				//Stop Count
+				rub_IsMeasureInProgress = FALSE;
+				//Disable Interrupt
+				APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT;
+				//Store measure
+
+
+				raub_Time[rub_Selector] = 0xff;
+
+
+				ultrasonic_ready = FALSE;
+
+
+				switch(rub_Selector)
+				{
+				default:
+					rub_Selector=READ_SENSOR1;
+				case READ_SENSOR1:
+					APP_TRG_OFF_ON_0();
+					break;
+				case READ_SENSOR2:
+					APP_TRG_OFF_ON_1();
+					break;
+				case READ_SENSOR3:
+					APP_TRG_OFF_ON_2();
+					break;
+				case READ_SENSOR4:
+					APP_TRG_OFF_ON_3();
+					break;
+
+				}
+				if(rub_Selector < (APP_ULTRASONICO_MACRO_NUM_SENSORES-1U)){
+
+
+					rub_Selector++;
+
+				}
+				else{
+
+					rub_Selector=0;
+				}
+
+
+
+			}
+			else{
+				rub_NumIntentos++;
+
+			}
+
+
+
+
+		}
+
+
+	}
+}

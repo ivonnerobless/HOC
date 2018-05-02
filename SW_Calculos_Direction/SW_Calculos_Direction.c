@@ -132,4 +132,3 @@ T_EDIRECTION app_force2direction(T_UBYTE laub_WeightData[]){
 
 
 }
-

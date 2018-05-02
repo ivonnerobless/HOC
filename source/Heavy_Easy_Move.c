@@ -48,7 +48,8 @@ volatile unsigned int sys_tick_counter = 0;
  */
 int main(void) {
   	/* Init board hardware. */
-    BOARD_InitBootPins();
+
+	BOARD_InitBootPins();
     BOARD_InitBootClocks();
   	/* Init FSL debug console. */
 	BOARD_InitDebugConsole();
