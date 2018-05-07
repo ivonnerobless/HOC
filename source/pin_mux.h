@@ -68,7 +68,7 @@ void BOARD_InitPins(void);
  *
  */
 void BOARD_I2C_ConfigurePins(void);
-
+void BOARD_InitBootPins(void);
 #if defined(__cplusplus)
 }
 #endif

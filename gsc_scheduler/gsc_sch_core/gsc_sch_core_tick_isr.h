@@ -9,7 +9,7 @@
 * date_created:    July 31 2013 
 *=============================================================================*/
 /* DESCRIPTION : Header of the tick source file for the                       */
-/* "Grandpa´s Clock Scheduler"                                                */
+/* "Grandpaï¿½s Clock Scheduler"                                                */
 /*============================================================================*/
 /* FUNCTION COMMENT : Header of the tick source file                          */
 /*                                                                            */
@@ -80,6 +80,7 @@ PUBLIC_DATA volatile SCH_BOOLEAN re_sch_mngExecflag;
 
 /* Functions prototypes */
 void gsc_sch_core_tick_isr(void);
+
 
 /* Functions macros */
 

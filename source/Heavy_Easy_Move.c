@@ -40,6 +40,7 @@
 
 /* TODO: insert other include files here. */
 #include "gsc_scheduler/gsc_sch_core/gsc_sch_core.h"
+#include "gsc_scheduler/gsc_sch_core/gsc_sch_core_tick_isr.h"
 
 /* TODO: insert other definitions and declarations here. */
 volatile unsigned int sys_tick_counter = 0;
@@ -53,7 +54,7 @@ int main(void) {
     BOARD_InitBootClocks();
   	/* Init FSL debug console. */
 	BOARD_InitDebugConsole();
-	BOARD_I2C_ReleaseBus();
+//	BOARD_I2C_ReleaseBus();
 	BOARD_I2C_ConfigurePins();
 
 
