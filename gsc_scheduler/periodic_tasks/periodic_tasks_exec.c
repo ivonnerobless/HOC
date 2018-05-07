@@ -29,6 +29,7 @@
 #include "periodic_tasks_modules.h"
 #include "Galgas/app_Gal.h"
 #include "../../SW_Calculos_Weight/app_Calculos_Weight.h"
+#include "SW_Acel.h"
 
 
 
@@ -137,6 +138,10 @@ void periodic_tasks_exec_500tks(void)
  **************************************************************/
 void periodic_tasks_exec_1Mtks(void)
 {
+
+	app_master();
+		app_LeerCordenadas();
+		app_coordenadas();
 	app_rgb_led_fsm();
 
 }

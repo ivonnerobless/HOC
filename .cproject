@@ -245,20 +245,6 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<folderInfo id="com.crt.advproject.config.exe.debug.1780266890.1563934787" name="/" resourcePath="SW_Calculos_Direction">
-						<toolChain id="com.crt.advproject.toolchain.exe.debug.1368423431" name="NXP MCU Tools" superClass="com.crt.advproject.toolchain.exe.debug" unusedChildren="">
-							<tool id="com.crt.advproject.cpp.exe.debug.797924274" name="MCU C++ Compiler" superClass="com.crt.advproject.cpp.exe.debug.471889988"/>
-							<tool id="com.crt.advproject.gcc.exe.debug.47082217" name="MCU C Compiler" superClass="com.crt.advproject.gcc.exe.debug.1788034467">
-								<inputType id="com.crt.advproject.compiler.input.1407573405" superClass="com.crt.advproject.compiler.input"/>
-							</tool>
-							<tool id="com.crt.advproject.gas.exe.debug.208480062" name="MCU Assembler" superClass="com.crt.advproject.gas.exe.debug.909423704">
-								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.559247132" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
-								<inputType id="com.crt.advproject.assembler.input.344327428" name="Additional Assembly Source Files" superClass="com.crt.advproject.assembler.input"/>
-							</tool>
-							<tool id="com.crt.advproject.link.cpp.exe.debug.722067369" name="MCU C++ Linker" superClass="com.crt.advproject.link.cpp.exe.debug.744835296"/>
-							<tool id="com.crt.advproject.link.exe.debug.1906870587" name="MCU Linker" superClass="com.crt.advproject.link.exe.debug.112724913"/>
-						</toolChain>
-					</folderInfo>
 					<sourceEntries>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="CMSIS"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Galgas"/>
