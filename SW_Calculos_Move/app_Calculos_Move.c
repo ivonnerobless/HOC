@@ -61,7 +61,6 @@ T_UWORD app_Calculos_Weight2MoveX(T_UWORD * G)
 	}
 
 
-
 }
 
 

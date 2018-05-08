@@ -16,6 +16,4 @@
 extern T_UWORD rub_Force;
 
 
-
-
 #endif /* APP_CALCULOS_MOVE_H_ */
