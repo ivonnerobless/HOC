@@ -8,15 +8,15 @@
 
 #include "stdtypedef.h"
 #include "app_Calculos_Weight.h"
+static T_UWORD app_Calculos_Raw2Weight (T_UWORD luw_RawDate);
+
 #include "Galgas/app_Gal.h"
 
 
  /******************************************
  * Private Prototypes
  ******************************************/
-static T_UWORD app_Calculos_Raw2Weight (T_UWORD luw_RawDate);
-
-static T_UWORD ruw_WeightValue[4];
+T_UWORD ruw_WeightValue[4];
 
 
 

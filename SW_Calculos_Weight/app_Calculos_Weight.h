@@ -12,5 +12,7 @@
 #define MACRO_WEIGHT_MIN	0u
 #define MACRO_CONSTANT		8u
 
+extern T_UWORD ruw_WeightValue[4];
+
 
 #endif /* APP_CALCULOS_WEIGHT_H_ */

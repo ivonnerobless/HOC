@@ -10,7 +10,9 @@
 
 #define MACRO_SPEED_ISANOBSTACLE	0u
 #define MACRO_SPEED_MULTIPLIER		10u
-#define MACRO_SPEED_STOP_VALUE		6u
+#define MACRO_SPEED_STOP_VALUE		0u
+
+extern T_UBYTE rub_Speed;
 
 
 #endif /* SW_CALCULOS_SPEED_H_ */

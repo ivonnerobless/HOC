@@ -10,12 +10,13 @@
  ******************************************/
 #include "stdtypedef.h"
 #include "SW_Calculos_Speed.h"
+#include "../../SW_Calculos_Move/app_Calculos_Move.h"
 
 
 /******************************************
  * Private Macros
  ******************************************/
-#define rub_Force 0u
+
 
 /******************************************
  * Private Prototypes
@@ -60,8 +61,9 @@ void app_Speed_MngTask(void)
 {
 	if(FALSE == MACRO_SPEED_ISANOBSTACLE)
 	{
-		rub_Speed = app_Speed_Force2Speed(rub_Force);																																																																																																																							rub_Speed = app_Speed_Force2Speed(rub_Force);
+		rub_Speed = app_Speed_Force2Speed(rub_Force);
 	}
+
 	else
 	{
 		rub_Speed = MACRO_SPEED_STOP_VALUE;

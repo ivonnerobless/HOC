@@ -29,7 +29,8 @@
 #include "periodic_tasks_modules.h"
 #include "Galgas/app_Gal.h"
 #include "../../SW_Calculos_Weight/app_Calculos_Weight.h"
-
+#include "../../SW_Calculos_Move/app_Calculos_Move.h"
+#include "../../SW_Calculos_Power/SW_Calculos_Power.h"
 
 
 
@@ -46,7 +47,8 @@
  void periodic_tasks_exec_5tks(void)
  {
 	 app_ADC_Task();
-	 app_RawDate_Task();
+
+
 
  }
  
@@ -62,6 +64,7 @@
  void periodic_tasks_exec_10tks(void)
  {
 	 app_Speed_MngTask();
+	 app_Power_MngTask();
 
  }
  
@@ -104,7 +107,8 @@
  **************************************************************/
  void periodic_tasks_exec_100tks(void)
  { 
-
+	 app_RawDate_Task();
+	 app_Raw_Task();
  }
  
  /**************************************************************
