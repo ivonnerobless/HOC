@@ -8,18 +8,12 @@
 #ifndef APP_ULTRASONICO_H_
 #define APP_ULTRASONICO_H_
 
-#define app_Ultrasonicos_ISR_Task	PIT_IRQHandler
+#include "stdtypedef.h"
 
-#define APP_ULTRASONICO_MACRO_ENABLE_PIN_INTERRUPT	\
-		/* Set timer period for channel 0 */\
-		PIT_SetTimerPeriod(PIT, kPIT_Chnl_0, USEC_TO_COUNT(100U, CLOCK_GetFreq(kCLOCK_BusClk)));\
-		/* Enable timer interrupts for channel 0 */\
-		PIT_EnableInterrupts(PIT, kPIT_Chnl_0, kPIT_TimerInterruptEnable);\
-		PIT_StartTimer(PIT, kPIT_Chnl_0)
+#define APP_ULTRASONICO_MACRO_ENABLE_PIN_INTERRUPT Ultrasonic_Isr_Flag = TRUE
 
-#define APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT \
-		PIT_DisableInterrupts(PIT, kPIT_Chnl_0, kPIT_TimerInterruptEnable);\
-		PIT_StopTimer(PIT, kPIT_Chnl_0)
+#define APP_ULTRASONICO_MACRO_DISABLE_PIN_INTERRUPT Ultrasonic_Isr_Flag = FALSE
+
 #define APP_ULTRASONICO_MACRO_TIME_MAX 90U
 #define APP_ULTRASONICO_MACRO_NUM_INTENTOS 5U
 #define APP_ULTRASONICO_MACRO_NUM_SENSORES N_SENSORS
@@ -60,5 +54,5 @@ extern void app_config_init_counter (void);
 extern void COUNTER_TRG (void);
 extern void app_Ultrasonicos_Task(void);
 extern void app_Ultrasonicos_ISR_Task(void);
-
+extern T_UBYTE Ultrasonic_Isr_Flag;
 #endif /* APP_ULTRASONICO_H_ */
