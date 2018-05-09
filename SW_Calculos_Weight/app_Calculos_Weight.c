@@ -16,7 +16,7 @@
  ******************************************/
 static T_UWORD app_Calculos_Raw2Weight (T_UWORD luw_RawDate);
 
-static T_UWORD ruw_WeightValue[4];
+T_UWORD ruw_WeightValue[4];
 
 
 

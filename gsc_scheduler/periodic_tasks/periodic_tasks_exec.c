@@ -30,6 +30,8 @@
 #include "Galgas/app_Gal.h"
 #include "../../SW_Calculos_Weight/app_Calculos_Weight.h"
 #include "SW_Acel.h"
+#include "SW_Calculos_PW/SW_Calculos_PW.h"
+
 
 
 
@@ -44,13 +46,15 @@
  *  Return               : none
  *  Critical/explanation : no
  **************************************************************/
- void periodic_tasks_exec_5tks(void)
- {
-	 app_ADC_Task();
-	 app_Ultrasonicos_Task();
- }
- 
- /**************************************************************
+void periodic_tasks_exec_5tks(void)
+{
+	app_ADC_Task();
+	app_Ultrasonicos_Task();
+
+
+}
+
+/**************************************************************
  *  Name                 : periodic_tasks_exec_10tks
  *	ID					 : TASK_10TKS
  *  Description          : Container for functionality that is 
@@ -59,12 +63,12 @@
  *  Return               : none
  *  Critical/explanation : no
  **************************************************************/
- void periodic_tasks_exec_10tks(void)
- {
-	 app_Speed_MngTask();
- }
- 
- /**************************************************************
+void periodic_tasks_exec_10tks(void)
+{
+	app_Speed_MngTask();
+}
+
+/**************************************************************
  *  Name                 : periodic_tasks_exec_20tks
  *	ID					 : TASK_20TKS
  *  Description          : Container for functionality that is 
@@ -101,12 +105,13 @@ void periodic_tasks_exec_50tks(void)
  *  Return               : none
  *  Critical/explanation : no
  **************************************************************/
- void periodic_tasks_exec_100tks(void)
- { 
-    app_RawDate_Task();
- }
- 
- /**************************************************************
+void periodic_tasks_exec_100tks(void)
+{
+	app_RawDate_Task();
+	app_Pw_Servo_Task(app_force2direction(ruw_WeightValue));
+}
+
+/**************************************************************
 
  *  Name                 : periodic_tasks_exec_500tks
  *	ID					 : TASK_500TKS
@@ -118,13 +123,7 @@ void periodic_tasks_exec_50tks(void)
  **************************************************************/
 void periodic_tasks_exec_500tks(void)
 {
-	T_UBYTE laub_TestVector[5];
-	laub_TestVector[0]=100;
-	laub_TestVector[1]=100;
-	laub_TestVector[2]=200;
-	laub_TestVector[3]=200;
-	laub_TestVector[4]=150;
-	(void) app_force2direction(laub_TestVector);
+
 }
 
 /**************************************************************
@@ -138,10 +137,9 @@ void periodic_tasks_exec_500tks(void)
  **************************************************************/
 void periodic_tasks_exec_1Mtks(void)
 {
-
 	app_master();
-		app_LeerCordenadas();
-		app_coordenadas();
+	app_LeerCordenadas();
+	app_coordenadas();
 	app_rgb_led_fsm();
 
 }

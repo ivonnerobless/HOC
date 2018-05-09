@@ -13,4 +13,7 @@
 #define MACRO_CONSTANT		8u
 
 extern void app_RawDate_Task(void);
+
+extern T_UWORD ruw_WeightValue[4];
+
 #endif /* APP_CALCULOS_WEIGHT_H_ */

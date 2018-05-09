@@ -31,5 +31,5 @@ typedef enum
 	DIR_INVALID
 }T_EDIRECTION;
 
-extern T_EDIRECTION app_force2direction(T_UBYTE laub_WeightData[]);
+extern T_EDIRECTION app_force2direction(T_UWORD laub_WeightData[]);
 #endif /* SW_CALCULOS_DIRECTION_H_ */

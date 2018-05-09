@@ -52,7 +52,7 @@ T_UBYTE rub_NumIntentos;
 T_UBYTE rub_Selector;
 static T_UBYTE rub_TimeTemp;
 T_UBYTE raub_Time[APP_ULTRASONICO_MACRO_NUM_SENSORES];
-
+T_UBYTE Ultrasonic_Isr_Flag;
 T_UBYTE ultrasonic_ready;
 
 void APP_TRG_ON_OFF_0 (void)
@@ -145,16 +145,6 @@ void app_config_init_counter (void)
 	GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_2, &ls_PinConfig);
 	GPIO_PinInit(GPIOC, APP_ECHO_PIN_NUMBER_3, &ls_PinConfig);
 
-	pit_config_t ls_PitConfig;
-
-	PIT_GetDefaultConfig(&ls_PitConfig);
-
-	/* Enable at the NVIC */
-	EnableIRQ(PIT_IRQn);
-
-	/* Init pit module */
-	PIT_Init(PIT, &ls_PitConfig);
-
 	//Clear triggered flag
 	rub_IsTriggered = FALSE;
 	//Clear Time Temp Variable
@@ -169,6 +159,8 @@ void app_config_init_counter (void)
 	rub_NumIntentos=0u;
 	//selector
 	rub_Selector=0;
+	//flag interruption
+	Ultrasonic_Isr_Flag = 0;
 
 
 }
@@ -213,6 +205,7 @@ void app_Ultrasonicos_Task(void)
 		rub_TimeTemp = 0u;
 		rub_NumIntentos = 0u;
 		//Enable measure function every 100us
+
 		APP_ULTRASONICO_MACRO_ENABLE_PIN_INTERRUPT;
 		//Set In Progress Flag
 		rub_IsMeasureInProgress = TRUE;
@@ -256,8 +249,6 @@ void app_Ultrasonicos_Task(void)
 void app_Ultrasonicos_ISR_Task(void)
 {
 	T_UBYTE lub_EchoValue;
-	/* Clear interrupt flag.*/
-	PIT_ClearStatusFlags(PIT, kPIT_Chnl_0, kPIT_TimerFlag);
 	if(TRUE == ultrasonic_ready)
 
 	{

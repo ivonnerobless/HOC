@@ -18,7 +18,7 @@
 
 
 
-T_EDIRECTION app_force2direction(T_UBYTE laub_WeightData[]){
+T_EDIRECTION app_force2direction(T_UWORD laub_WeightData[]){
 	T_UBYTE lub_IsDataAligned;
 	T_UBYTE laub_data[APP_DIRECTION_MACRO];
 	T_UBYTE laub_Dir[APP_DIRECTION_MACRO];
