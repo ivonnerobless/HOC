@@ -57,4 +57,5 @@ extern void COUNTER_TRG (void);
 extern void app_Ultrasonicos_Task(void);
 extern void app_Ultrasonicos_ISR_Task(void);
 extern T_UBYTE Ultrasonic_Isr_Flag;
+extern T_UBYTE raub_Time[APP_ULTRASONICO_MACRO_NUM_SENSORES];
 #endif /* APP_ULTRASONICO_H_ */

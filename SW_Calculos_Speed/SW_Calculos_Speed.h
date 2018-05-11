@@ -21,6 +21,9 @@
 
 extern void app_Speed_Init(void);
 extern void app_Speed_MngTask(void);
+extern T_UBYTE rub_DetectaObstaculo;
+extern T_UBYTE rub_IsDirectionValid;
+extern T_UBYTE rub_Speed;
 
 //#define rub_Force 30U//
 

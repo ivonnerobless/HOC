@@ -245,11 +245,27 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="com.crt.advproject.config.exe.debug.1780266890.1957468113" name="/" resourcePath="SW_Calculos_Power">
+						<toolChain id="com.crt.advproject.toolchain.exe.debug.1040465930" name="NXP MCU Tools" superClass="com.crt.advproject.toolchain.exe.debug" unusedChildren="">
+							<tool id="com.crt.advproject.cpp.exe.debug.1241811711" name="MCU C++ Compiler" superClass="com.crt.advproject.cpp.exe.debug.471889988"/>
+							<tool id="com.crt.advproject.gcc.exe.debug.1441518645" name="MCU C Compiler" superClass="com.crt.advproject.gcc.exe.debug.1788034467">
+								<inputType id="com.crt.advproject.compiler.input.871190279" superClass="com.crt.advproject.compiler.input"/>
+							</tool>
+							<tool id="com.crt.advproject.gas.exe.debug.1561544641" name="MCU Assembler" superClass="com.crt.advproject.gas.exe.debug.909423704">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1242136852" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+								<inputType id="com.crt.advproject.assembler.input.449247873" name="Additional Assembly Source Files" superClass="com.crt.advproject.assembler.input"/>
+							</tool>
+							<tool id="com.crt.advproject.link.cpp.exe.debug.2042355374" name="MCU C++ Linker" superClass="com.crt.advproject.link.cpp.exe.debug.744835296"/>
+							<tool id="com.crt.advproject.link.exe.debug.1481739080" name="MCU Linker" superClass="com.crt.advproject.link.exe.debug.112724913"/>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
 						<entry flags="LOCAL|VALUE_WORKSPACE_PATH" kind="sourcePath" name="CMSIS"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Galgas"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SW_Calculos_Direction"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="SW_Calculos_Move"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SW_Calculos_PW"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="SW_Calculos_Power"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SW_Calculos_Speed"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SW_Calculos_Weight"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="app"/>

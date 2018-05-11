@@ -15,9 +15,10 @@
 #include "fsl_pit.h"
 #include "SW_Calculos_Direction.h"
 #include "stdtypedef.h"
+#include "app_Ultrasonico.h"
+#include "SW_Calculos_Speed/SW_Calculos_Speed.h"
 
-T_UBYTE rub_IsDirectionValid;
-T_UBYTE rub_DetectaObstaculo;
+
 
 T_EDIRECTION app_force2direction(T_UWORD laub_WeightData[]){
 	T_UBYTE lub_IsDataAligned;

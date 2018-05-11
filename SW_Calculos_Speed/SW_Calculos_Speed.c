@@ -10,7 +10,7 @@
  ******************************************/
 #include "stdtypedef.h"
 #include "SW_Calculos_Speed.h"
-
+#include "SW_Calculos_Move/app_Calculos_Move.h"
 
 
 /******************************************
@@ -21,7 +21,7 @@
 /******************************************
  * Private Variables
  ******************************************/
-T_UBYTE rub_Force;
+//T_UBYTE rub_Force;
 
 /******************************************
  * Private Prototypes
@@ -29,8 +29,11 @@ T_UBYTE rub_Force;
 static T_UBYTE app_Speed_Force2Speed(T_UBYTE lub_Force);
 
 
-
+T_UBYTE rub_DetectaObstaculo;
+T_UBYTE rub_IsDirectionValid;
 T_UBYTE rub_Speed;
+
+
 
 /***********************************************
  * Initialization of the Speed module

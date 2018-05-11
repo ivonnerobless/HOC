@@ -11,6 +11,7 @@
 #include "stdtypedef.h"
 #define APP_DIRECTION_MACRO N_DIRECTION
 
+
 enum
 {
 
