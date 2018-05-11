@@ -50,8 +50,6 @@ void periodic_tasks_exec_5tks(void)
 {
 	app_ADC_Task();
 	app_Ultrasonicos_Task();
-
-
 }
 
 /**************************************************************
@@ -79,7 +77,7 @@ void periodic_tasks_exec_10tks(void)
  **************************************************************/
 void periodic_tasks_exec_20tks(void)
 {
-
+	app_MotorController_Task();
 }
 
 /**************************************************************
