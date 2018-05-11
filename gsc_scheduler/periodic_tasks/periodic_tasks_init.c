@@ -67,6 +67,7 @@ void periodic_tasks_init_SysDrvs(void)
  void periodic_tasks_init_task_5tks(void)
  {
 	 app_ADC_Init();
+	 app_PWM_Init();
  }
  
  /**************************************************************

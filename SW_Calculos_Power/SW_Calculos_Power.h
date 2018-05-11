@@ -13,11 +13,13 @@
 #define MACRO_POWER_MIN		0u
 #define MACRO_POWER_CONSTANT		2u
 
+
 //Operation to be performed
 #define MACRO_POWER_DIVIDE
 
 
-extern T_UBYTE rub_Power;
+
+
 
 
 #endif /* SW_CALCULOS_POWER_H_ */
