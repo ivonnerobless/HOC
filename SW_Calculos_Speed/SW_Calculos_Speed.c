@@ -82,7 +82,9 @@ T_UBYTE app_Speed_Force2Speed(T_UBYTE lub_Force)
  ***********************************************/
 void app_Speed_MngTask(void)
 {
-	if(FALSE == MACRO_SPEED_ISANOBSTACLE)
+	if(		(FALSE == MACRO_SPEED_ISANOBSTACLE)	/*Existe un obstaculo en la direccion?*/ &&
+			(TRUE == MACRO_SPEED_IS_DIRECTION_VALID)	/* La direccion de movimiento es valida? */
+	)
 	{
 		rub_Speed = app_Speed_Force2Speed(rub_Force);																																																																																																																							rub_Speed = app_Speed_Force2Speed(rub_Force);
 	}

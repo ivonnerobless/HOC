@@ -16,7 +16,8 @@
 #include "SW_Calculos_Direction.h"
 #include "stdtypedef.h"
 
-
+T_UBYTE rub_IsDirectionValid;
+T_UBYTE rub_DetectaObstaculo;
 
 T_EDIRECTION app_force2direction(T_UWORD laub_WeightData[]){
 	T_UBYTE lub_IsDataAligned;
@@ -86,34 +87,80 @@ T_EDIRECTION app_force2direction(T_UWORD laub_WeightData[]){
 
 	}while(lub_IsDataAligned == FALSE);
 
-
+	/* Pre validation */
+	rub_IsDirectionValid = TRUE;
 
 	if((READ_front_left == laub_Dir[0] && READ_front_right == laub_Dir[1]) ||
 			(READ_front_left == laub_Dir[1] && READ_front_right == laub_Dir[0]))
-	{
+	{//Return the FRONT Direction
 		lub_return = DIR_FRONT;
+
+		if(/* Preguntar si al frente hay un obstaculo */
+				raub_Time[READ_SENSOR1] <= MACRO_APP_ULTRASONICO_TIME_FOR_OBSTACLE)
+		{
+			rub_DetectaObstaculo = TRUE;
+		}
+		else
+		{
+			rub_DetectaObstaculo = FALSE;
+		}
+
 	}
 	else if((READ_rear_left == laub_Dir[0] && READ_rear_right == laub_Dir[1]) ||
 			(READ_rear_left == laub_Dir[1] && READ_rear_right == laub_Dir[0]))
 	{
 		lub_return = DIR_REAR;
+
+		if(/* Preguntar si atras hay un obstaculo */
+				raub_Time[READ_SENSOR2] <= MACRO_APP_ULTRASONICO_TIME_FOR_OBSTACLE)
+		{
+			rub_DetectaObstaculo = TRUE;
+		}
+		else
+		{
+			rub_DetectaObstaculo = FALSE;
+		}
 	}
 	else if((READ_front_left == laub_Dir[0] && READ_rear_left == laub_Dir[1]) ||
 			(READ_rear_left == laub_Dir[1] && READ_front_left == laub_Dir[0]))
 	{
 		lub_return = DIR_LEFT;
+
+		if(/* Preguntar si a la izquierda hay un obstaculo */
+				raub_Time[READ_SENSOR3] <= MACRO_APP_ULTRASONICO_TIME_FOR_OBSTACLE)
+		{
+			rub_DetectaObstaculo = TRUE;
+		}
+		else
+		{
+			rub_DetectaObstaculo = FALSE;
+		}
 	}
 	else if((READ_front_right == laub_Dir[0] && READ_rear_right == laub_Dir[1]) ||
 				(READ_rear_right == laub_Dir[1] && READ_front_right == laub_Dir[0]))
 		{
 			lub_return = DIR_RIGHT;
+
+			if(/* Preguntar si a la derecha hay un obstaculo */
+					raub_Time[READ_SENSOR4] <= MACRO_APP_ULTRASONICO_TIME_FOR_OBSTACLE)
+			{
+				rub_DetectaObstaculo = TRUE;
+			}
+			else
+			{
+				rub_DetectaObstaculo = FALSE;
+			}
 		}
 	else
 	{
 		lub_return = DIR_INVALID;
+
+		/* Invalidation */
+		rub_IsDirectionValid = FALSE;
+
+		//Limp mode - Safe Mode
+		rub_DetectaObstaculo = FALSE;
 	}
 
 	return lub_return;
-
-
 }
