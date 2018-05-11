@@ -70,7 +70,7 @@ void periodic_tasks_init_SysDrvs(void)
 	 app_ADC_Init();
 	 app_config_init_counter();
 	 app_config_clock();
-
+	 app_MotorController_Init();
  }
  
  /**************************************************************

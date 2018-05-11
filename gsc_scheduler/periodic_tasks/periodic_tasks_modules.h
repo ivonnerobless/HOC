@@ -35,6 +35,7 @@
 #include "SW_Calculos_Direction/SW_Calculos_Direction.h"
 #include "app_Ultrasonico.h"
 #include "SW_Calculos_Speed/SW_Calculos_Speed.h"
+#include "app_MotorController.h"
 /*============================================================================*/
 
 #endif
